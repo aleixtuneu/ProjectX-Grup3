@@ -4,8 +4,11 @@ using UnityEngine.SceneManagement;
 
 public enum GameState
 {
+    //Cinematic,
     Playing,
     Paused,
+    //BossBattle,
+    //Respawninng,
     GameOver
 }
 
@@ -18,20 +21,18 @@ public class GameManager : MonoBehaviour
     public static event Action<GameState> OnStateChanged;
     public static event Action<int, Vector3> OnCheckpointReached;
     public static event Action<Vector3> OnFinalCheckpointReached;
+    public static event Action<bool> OnBossDefeated;
     public static event Action<int> OnExitReached;
 
     [SerializeField] private int totalCheckpoints = 5;
-    [SerializeField] private GameObject pauseMenuUI;
-    [SerializeField] private Player player;
-    
-    [Header("Tilemap")]
-    [SerializeField] private GameObject destroyableTilemap;
-    [SerializeField] private GameObject destroyedObstacles;
+    //[SerializeField] private GameObject pauseMenuUI;
+    //TODO: Add player logic (health, ammo, death, life#)
+    //[SerializeField] private PlayerController player;
 
     private Vector3 _lastCheckpointPosition;
     private int _lastCheckpointNumber = 0;
 
-    private int _deathCount = 0;
+    private int _livesLeft = 0;
     
     private InputSystem_Actions _inputActions;
 
@@ -57,11 +58,11 @@ public class GameManager : MonoBehaviour
     {
         ChangeState(GameState.Playing);
         
-        if (pauseMenuUI)
+        /*if (pauseMenuUI)
             pauseMenuUI.SetActive(false);
 
-        if (player)
-            _lastCheckpointPosition = player.transform.position;
+        if (player != null)
+            _lastCheckpointPosition = player.transform.position;*/
         
         _inputActions.Player.Enable();
         _inputActions.UI.Disable();
@@ -82,13 +83,9 @@ public class GameManager : MonoBehaviour
             {
                 OnCheckpointReached?.Invoke(checkpointNumber, checkpointPosition);
             }
-        }
-    }
 
-    public void OpenEndingPath()
-    {
-        destroyableTilemap.SetActive(false);
-        destroyedObstacles.SetActive(true);
+            Debug.Log("_lastCheckpointNumber = " + _lastCheckpointNumber);
+        }
     }
 
     public void UnlockWeapon()
@@ -98,17 +95,17 @@ public class GameManager : MonoBehaviour
 
     public void WinGame()
     {
-        OnExitReached?.Invoke(_deathCount);
+        OnExitReached?.Invoke(_livesLeft);
         GameOver();
     }
     
     public void RespawnPlayer()
     {
-        if (player && _currentState == GameState.Playing)
+        if (/*player && */_currentState == GameState.Playing)
         {
-            _deathCount++;
+            _livesLeft--;
             
-            CharacterController cc = player.GetComponent<CharacterController>();
+            /*CharacterController cc = player.GetComponent<CharacterController>();
             Rigidbody2D rb2d = player.GetComponent<Rigidbody2D>();
 
             if (cc)
@@ -126,7 +123,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 player.transform.position = _lastCheckpointPosition;
-            }
+            }*/
         }
     }
 
@@ -134,30 +131,30 @@ public class GameManager : MonoBehaviour
     {
         ChangeState(GameState.Paused);
         
-        if (player)
+        /*if (player)
             player.enabled = false;
         
         if (pauseMenuUI)
-            pauseMenuUI.SetActive(true);
+            pauseMenuUI.SetActive(true);*/
     }
 
     public void ResumeGame()
     {
         ChangeState(GameState.Playing);
 
-        if (player)
+        /*if (player)
             player.enabled = true;
 
         if (pauseMenuUI)
-            pauseMenuUI.SetActive(false);
+            pauseMenuUI.SetActive(false);*/
     }
 
     public void GameOver()
     {
         ChangeState(GameState.GameOver);
         
-        if (player)
-            player.enabled = false;
+        /*if (player)
+            player.enabled = false;*/
     }
 
     public void GoToMenu()
@@ -182,5 +179,10 @@ public class GameManager : MonoBehaviour
         {
             _inputActions.Dispose();
         }
+    }
+
+    private static void OnOnBossDefeated(bool isDead)
+    {
+        OnBossDefeated?.Invoke(isDead);
     }
 }

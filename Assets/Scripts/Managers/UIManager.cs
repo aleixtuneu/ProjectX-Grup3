@@ -122,8 +122,8 @@ public class UIManager : MonoBehaviour
 
     private void StartEndGame(Vector3 a)
     {
-        ShowFinalDialogue();
-        GameManager.Instance.OpenEndingPath();
+        /*ShowFinalDialogue();
+        GameManager.Instance.OpenEndingPath();*/
     }
     
     // The event receives a V3 and passes it over, but it's not needed here
