@@ -1,0 +1,27 @@
+GameManager
+
+ Score increases when AddScore() is called
+ Lives decrease when PlayerDied() is called
+ Game over triggers when lives reach 0
+ Respawn event fires with correct position
+ Pause/Resume toggles TimeScale correctly
+ Checkpoints save respawn position
+
+UIManager
+
+ Score text updates when score changes
+ Lives text updates when lives change
+ Pause menu shows/hides correctly
+ Resume button unpauses the game
+ Game over panel shows final score
+ Win panel shows score and death count
+ Information messages display temporarily
+ All buttons respond when TimeScale = 0
+
+Integration
+
+ Player respawns at correct checkpoint
+ Score persists through respawns
+ Game over shows when out of lives
+ Pause doesn't break input
+ UI buttons work when paused
