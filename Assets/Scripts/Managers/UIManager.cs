@@ -7,131 +7,272 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("HUD Elements")]
+    [SerializeField] private TextMeshProUGUI txtScore;
+    [SerializeField] private TextMeshProUGUI txtLives;
+    
+    [Header("Pause Menu")]
+    [SerializeField] private GameObject pauseMenuPanel;
     [SerializeField] private Button resumeButton;
-    [SerializeField] private Button menuButton;
     [SerializeField] private Button menuButtonPause;
     
-    [Header("Checkpoint UI")]
+    [Header("Game Over UI")]
+    [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private TextMeshProUGUI txtGameOverScore;
+    [SerializeField] private Button menuButtonGameOver;
+    [SerializeField] private Button restartButton;
+    
+    [Header("Information Messages")]
     [SerializeField] private TextMeshProUGUI txtInformationUI;
     [SerializeField] private string txtCheckpoint = "Checkpoint actualitzat!";
-    [SerializeField] private float checkpointDisplayDuration = 2f;
-    
-    [Header("WeaponUnlock UI")] 
     [SerializeField] private string textWeaponUnlock = "Has trobat una arma!";
-
-    [Header("Final Dialogue")]
-    [SerializeField] private GameObject finalDialoguePanel;
-    [SerializeField] private TextMeshProUGUI finalDialogueText;
-    [SerializeField] private string finalDialogueMessage = "Oh no! No puc seguir per aquí! He de tornar enrere!";
-    [SerializeField] private float typewriterSpeed = 0.05f;
+    [SerializeField] private float informationDisplayDuration = 2f;
     
     [Header("Winning UI")]
+    [SerializeField] private GameObject winPanel;
+    [SerializeField] private TextMeshProUGUI txtWinMessage;
+    [SerializeField] private TextMeshProUGUI txtWinScore;
+    [SerializeField] private Button menuButtonWin;
     [SerializeField] private string textWinning = "Has pogut escapar!";
+
+    [Header("Final Dialogue (Typewriter)")]
+    [SerializeField] private GameObject finalDialoguePanel;
+    [SerializeField] private TextMeshProUGUI finalDialogueText;
+    [SerializeField] private string finalDialogueMessage = "MISSION 1 COMPLETE…\nBUT THE WAR HAS ONLY JUST BEGUN.";
+    [SerializeField] private float typewriterSpeed = 0.05f;
 
     private Coroutine _typewriterCoroutine;
 
+    #region Unity Lifecycle
+
     private void OnEnable()
     {
+        // Game State Events
+        GameManager.OnStateChanged += HandleStateChanged;
+        
+        // Score & Lives Events
+        GameManager.OnScoreChanged += UpdateScoreUI;
+        GameManager.OnLivesChanged += UpdateLivesUI;
+        
+        // Checkpoint Events
         GameManager.OnCheckpointReached += ShowCheckpointUI;
-        GameManager.OnFinalCheckpointReached += StartEndGame;
+        
+        // Game Events
         GameManager.OnPlayerWeaponUnlocked += ShowWeaponUnlockUI;
+        GameManager.OnGameOver += ShowGameOverUI;
         GameManager.OnExitReached += ShowWinningUI;
     }
 
     private void OnDisable()
     {
+        // Game State Events
+        GameManager.OnStateChanged -= HandleStateChanged;
+        
+        // Score & Lives Events
+        GameManager.OnScoreChanged -= UpdateScoreUI;
+        GameManager.OnLivesChanged -= UpdateLivesUI;
+        
+        // Checkpoint Events
         GameManager.OnCheckpointReached -= ShowCheckpointUI;
-        GameManager.OnFinalCheckpointReached -= StartEndGame;
+        
+        // Game Events
         GameManager.OnPlayerWeaponUnlocked -= ShowWeaponUnlockUI;
+        GameManager.OnGameOver -= ShowGameOverUI;
         GameManager.OnExitReached -= ShowWinningUI;
     }
 
     private void Start()
     {
-        if (txtInformationUI)
-            txtInformationUI.gameObject.SetActive(false);
-        
-        if (finalDialoguePanel)
-            finalDialoguePanel.SetActive(false);
-        
-        resumeButton.onClick.AddListener(OnResumeClicked);
-        menuButton.onClick.AddListener(OnMenuClicked);
-        menuButtonPause.onClick.AddListener(OnMenuClicked);
+        InitializeUI();
+        SetupButtons();
     }
 
     private void Update()
     {
-        if(Time.timeScale == 0)
+        // Fix for Input System when TimeScale = 0
+        if (Time.timeScale == 0)
         {
             InputSystem.Update();
         }
     }
 
-    private void OnResumeClicked()
+    #endregion
+
+    #region Initialization
+
+    private void InitializeUI()
     {
-        GameManager.Instance.ResumeGame();
-    }
-    
-    private void OnMenuClicked()
-    {
-        GameManager.Instance.GoToMenu();
+        // Hide all panels
+        if (pauseMenuPanel) pauseMenuPanel.SetActive(false);
+        if (gameOverPanel) gameOverPanel.SetActive(false);
+        if (winPanel) winPanel.SetActive(false);
+        if (finalDialoguePanel) finalDialoguePanel.SetActive(false);
+        if (txtInformationUI) txtInformationUI.gameObject.SetActive(false);
+        
+        // Initialize HUD
+        UpdateScoreUI(0);
+        UpdateLivesUI(GameManager.Instance ? GameManager.Instance.GetLivesRemaining() : 0);
     }
 
-    private void ShowCheckpointUI(int checkpointNumber, Vector3 a )
+    private void SetupButtons()
+    {
+        // Pause Menu Buttons
+        if (resumeButton) resumeButton.onClick.AddListener(OnResumeClicked);
+        if (menuButtonPause) menuButtonPause.onClick.AddListener(OnMenuClicked);
+        
+        // Game Over Buttons
+        if (menuButtonGameOver) menuButtonGameOver.onClick.AddListener(OnMenuClicked);
+        if (restartButton) restartButton.onClick.AddListener(OnRestartClicked);
+        
+        // Win Buttons
+        if (menuButtonWin) menuButtonWin.onClick.AddListener(OnMenuClicked);
+    }
+
+    #endregion
+
+    #region HUD Updates
+
+    private void UpdateScoreUI(int score)
+    {
+        if (txtScore)
+        {
+            txtScore.text = $"Score: {score}";
+        }
+    }
+
+    private void UpdateLivesUI(int lives)
+    {
+        if (txtLives)
+        {
+            txtLives.text = $"Lives: {lives}";
+        }
+    }
+
+    #endregion
+
+    #region Game State Handling
+
+    private void HandleStateChanged(GameState newState)
+    {
+        switch (newState)
+        {
+            case GameState.Playing:
+                HideAllPanels();
+                break;
+                
+            case GameState.Paused:
+                ShowPauseMenu();
+                break;
+                
+            case GameState.GameOver:
+                // Game Over UI is handled by OnGameOver/OnExitReached events
+                break;
+        }
+    }
+
+    private void ShowPauseMenu()
+    {
+        if (pauseMenuPanel)
+        {
+            pauseMenuPanel.SetActive(true);
+        }
+    }
+
+    private void HideAllPanels()
+    {
+        if (pauseMenuPanel) pauseMenuPanel.SetActive(false);
+        if (gameOverPanel) gameOverPanel.SetActive(false);
+        if (winPanel) winPanel.SetActive(false);
+    }
+
+    #endregion
+
+    #region Information Messages
+
+    private void ShowCheckpointUI(int checkpointNumber, Vector3 position)
+    {
+        ShowInformationMessage(txtCheckpoint);
+    }
+
+    private void ShowWeaponUnlockUI(bool isUnlocked)
+    {
+        ShowInformationMessage(textWeaponUnlock);
+    }
+
+    private void ShowInformationMessage(string message)
     {
         if (txtInformationUI)
         {
-            txtInformationUI.text = txtCheckpoint;
-            StartCoroutine(DisplayInformationUI(checkpointDisplayDuration));
+            txtInformationUI.text = message;
+            StartCoroutine(DisplayInformationUI(informationDisplayDuration));
         }
     }
 
     private IEnumerator DisplayInformationUI(float displayDuration)
     {
-        txtInformationUI.gameObject.SetActive(true);
-        yield return new WaitForSecondsRealtime(displayDuration);
-        txtInformationUI.gameObject.SetActive(false);
-    }
-    
-    private void ShowWeaponUnlockUI(bool isUnlocked)
-    {
         if (txtInformationUI)
         {
-            txtInformationUI.text = textWeaponUnlock;
-            StartCoroutine(DisplayInformationUI(checkpointDisplayDuration));
-        }
-    }
-    
-    private void ShowWinningUI(int playerDeathCount)
-    {
-        if (menuButton)
-        {
-            Debug.Log("Activating Winning UI menubutton");
-            menuButton.gameObject.SetActive(true);
-        }
-        
-        // Debug.Log($"{playerDeathCount}: has guanyat");
-        if (txtInformationUI)
-        {
-            txtInformationUI.text = (playerDeathCount > 0) ? 
-                $"{textWinning} \nPero t'ha costat {playerDeathCount} intents." : 
-                    $"{textWinning} \n Enhorabona! T'has mantingut invicte! \n\n...Espera, mai faries trampa, oi? oi?" ;
             txtInformationUI.gameObject.SetActive(true);
+            yield return new WaitForSecondsRealtime(displayDuration);
+            txtInformationUI.gameObject.SetActive(false);
         }
     }
 
-    private void StartEndGame(Vector3 a)
+    #endregion
+
+    #region Game Over UI
+
+    private void ShowGameOverUI(int finalScore)
     {
-        /*ShowFinalDialogue();
-        GameManager.Instance.OpenEndingPath();*/
+        if (gameOverPanel)
+        {
+            gameOverPanel.SetActive(true);
+        }
+        
+        if (txtGameOverScore)
+        {
+            txtGameOverScore.text = $"Game Over\n\nFinal Score: {finalScore}";
+        }
     }
-    
-    // The event receives a V3 and passes it over, but it's not needed here
+
+    #endregion
+
+    #region Winning UI
+
+    private void ShowWinningUI(int finalScore, int deathCount)
+    {
+        // Show win panel with score and stats
+        if (winPanel)
+        {
+            winPanel.SetActive(true);
+        }
+        
+        if (txtWinScore)
+        {
+            txtWinScore.text = $"Score: {finalScore}";
+        }
+        
+        if (txtWinMessage)
+        {
+            txtWinMessage.text = (deathCount > 0) ? 
+                $"{textWinning}\nPero t'ha costat {deathCount} intents." : 
+                $"{textWinning}\nEnhorabona! T'has mantingut invicte!\n\n...Espera, mai faries trampa, oi? oi?";
+        }
+        
+        // Show typewriter dialogue alongside win panel
+        ShowFinalDialogue();
+    }
+
+    #endregion
+
+    #region Final Dialogue (Typewriter Effect)
+
     private void ShowFinalDialogue()
     {
         if (finalDialoguePanel != null && finalDialogueText != null)
         {
             finalDialoguePanel.SetActive(true);
+            
             if (_typewriterCoroutine != null)
                 StopCoroutine(_typewriterCoroutine);
             
@@ -161,4 +302,34 @@ public class UIManager : MonoBehaviour
         if (_typewriterCoroutine != null)
             StopCoroutine(_typewriterCoroutine);
     }
+
+    #endregion
+
+    #region Button Handlers
+
+    private void OnResumeClicked()
+    {
+        if (GameManager.Instance)
+        {
+            GameManager.Instance.ResumeGame();
+        }
+    }
+    
+    private void OnMenuClicked()
+    {
+        if (GameManager.Instance)
+        {
+            GameManager.Instance.GoToMenu();
+        }
+    }
+
+    private void OnRestartClicked()
+    {
+        if (GameManager.Instance)
+        {
+            GameManager.Instance.RestartLevel();
+        }
+    }
+
+    #endregion
 }

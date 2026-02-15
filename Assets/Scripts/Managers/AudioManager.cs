@@ -3,10 +3,10 @@ using UnityEngine;
 
 public enum AudioClips
 {
-    GravityChange,
-    ShootClick,
-    WeaponDraw,
-    WeaponUndraw
+    Jump,
+    // Shoot,
+    // WeaponDraw,
+    // WeaponUndraw
 }
 
 public class AudioManager : MonoBehaviour
@@ -84,6 +84,7 @@ public class AudioManager : MonoBehaviour
         Destroy(newSource.gameObject, clip.length);
     }
     
+    // Override to play spatialized event SFX at a position in world with a custom radius
     public void Play(AudioClips clipName, Vector3 position, float minDistance, float maxDistance)
     {
         AudioClip clip = GetClip(clipName);

@@ -1094,6 +1094,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   totalCheckpoints: 5
+  startingLives: 3
+  defaultSpawnPosition: {x: 0, y: 0, z: 0}
 --- !u!4 &1694097565
 Transform:
   m_ObjectHideFlags: 0
@@ -1379,6 +1381,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7421304968165750878, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
+      propertyPath: Priority.Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7421304968165750878, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
+      propertyPath: Priority.m_Value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7421304968165750878, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
+      propertyPath: m_LegacyPriority
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7421304968165750878, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
+      propertyPath: m_StreamingVersion
+      value: 20241001
+      objectReference: {fileID: 0}
+    - target: {fileID: 7421304968165750878, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
+      propertyPath: Target.TrackingTarget
+      value: 
+      objectReference: {fileID: 2319216028343916071}
+    - target: {fileID: 7421304968165750878, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
+      propertyPath: Target.CustomLookAtTarget
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7665731721178240084, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -1386,6 +1412,10 @@ PrefabInstance:
     - target: {fileID: 8166801105675623604, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8459336647814202666, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
+      propertyPath: m_Name
+      value: PlayerFollowCamera
       objectReference: {fileID: 0}
     - target: {fileID: 8459336647814202666, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
       propertyPath: m_Layer
@@ -1399,11 +1429,18 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8459336647814202580, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
+    - {fileID: 3959152273479066725, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
+--- !u!4 &2319216028343916071 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 820380864047521913, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
+  m_PrefabInstance: {fileID: 2319216028343916070}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
