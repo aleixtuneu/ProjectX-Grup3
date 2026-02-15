@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
         }
         
         _inputActions = new InputSystem_Actions();
-        _inputActions.Enable();
+        // Don't enable here - we'll enable specific action maps in Start
     }
 
     private void Start()
@@ -91,6 +91,8 @@ public class GameManager : MonoBehaviour
     {
         if (_inputActions != null)
         {
+            _inputActions.Player.Disable();
+            _inputActions.UI.Disable();
             _inputActions.Dispose();
         }
     }
@@ -222,6 +224,7 @@ public class GameManager : MonoBehaviour
 
     public void ResumeGame()
     {
+        // Debug.Log("GameManager: ResumeGame called - Current State: " + _currentState);
         if (_currentState == GameState.Paused)
         {
             ChangeState(GameState.Playing);
@@ -273,6 +276,7 @@ public class GameManager : MonoBehaviour
 
     public void GoToMenu()
     {
+        // Debug.Log("GameManager: GoToMenu called - Loading Scene 0");
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);
     }
