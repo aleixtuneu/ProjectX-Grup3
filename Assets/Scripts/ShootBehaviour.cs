@@ -24,22 +24,13 @@ public class ShootBehaviour : MonoBehaviour
         {
             audioSource = gameObject.AddComponent<AudioSource>();
         }   
-
+        
         // Buscar la càmera
         playerCamera = GetComponentInChildren<Camera>();
         if (playerCamera == null)
         {
             playerCamera = Camera.main;
         }       
-
-        if (playerCamera == null)
-        {
-            Debug.LogError("NO S'HA TROBAT LA CÀMERA! Assigna-la manualment."); //
-        }
-        else
-        {
-            Debug.Log($"Càmera trobada: {playerCamera.name}"); //
-        }
 
         // Buscar el FirePoint si no està assignat
         if (firePoint == null)
@@ -89,24 +80,12 @@ public class ShootBehaviour : MonoBehaviour
         // Comprovar si podem disparar
         if (Time.time < nextFireTime)
         {
-            return; // No mostrem missatge per no spam
+            return;
         }
 
         if (currentAmmo <= 0)
         {
             Debug.Log("Sense munició!");
-            return;
-        }
-
-        if (currentWeapon == null)
-        {
-            Debug.LogError("No hi ha arma!");
-            return;
-        }
-
-        if (playerCamera == null)
-        {
-            Debug.LogError("No hi ha càmera!");
             return;
         }
 
@@ -136,25 +115,32 @@ public class ShootBehaviour : MonoBehaviour
 
                 // Línia vermella quan toquem un enemic
                 if (showDebugRays)
+                {
                     Debug.DrawLine(firePoint.position, hit.point, Color.red, 1f);
+                }                  
             }
             else
             {
-                Debug.Log($"{hit.collider.gameObject.name} no pot rebre dany (no té component Enemy o IDamageable)");
+                Debug.Log($"{hit.collider.gameObject.name} no té component Enemy o IDamageable");
 
                 // Línia blava quan toquem algo que no és enemic
                 if (showDebugRays)
+                {
                     Debug.DrawLine(firePoint.position, hit.point, Color.blue, 1f);
+                }                
             }
         }
         else
         {
-            Debug.Log("No hem tocat res (disparo al buit)");
+            Debug.Log("No has tocat res.");
         }
 
         // So de disparo
         if (currentWeapon.shootSound != null)
+        {
             audioSource.PlayOneShot(currentWeapon.shootSound);
+        }
+            
 
         // Consumir munició i actualitzar temps
         currentAmmo--;
