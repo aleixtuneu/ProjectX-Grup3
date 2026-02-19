@@ -1,167 +1,133 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
+/// <summary>
+/// Handles shooting logic for the equipped weapon.
+/// All dependencies are explicit â€” assign them in the Inspector.
+/// Input is never read here; call <see cref="TryShoot"/> from your input handler.
+/// </summary>
 public class ShootBehaviour : MonoBehaviour
 {
-    public WeaponData currentWeapon;
-    public Transform firePoint; 
-    public LayerMask enemyLayer; 
+    // -----------------------------------------------------------------------------------------
+    // Inspector
+    // -----------------------------------------------------------------------------------------
 
-    public bool showDebugRays = true;
+    [Header("Weapon")]
+    [SerializeField] private WeaponData currentWeapon;
 
-    private int currentAmmo;
-    private float nextFireTime;
-    private AudioSource audioSource;
-    private Camera playerCamera;
-    private PlayerInput playerInput;
-    private InputAction attackAction;
+    [Header("References")]
+    [SerializeField] private Camera    playerCamera;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private LayerMask enemyLayer;
 
-    void Start()
+    [Header("Debug")]
+    [SerializeField] private bool showDebugRays = true;
+
+    // -----------------------------------------------------------------------------------------
+    // State
+    // -----------------------------------------------------------------------------------------
+
+    private int         _currentAmmo;
+    private float       _nextFireTime;
+    private AudioSource _audioSource;
+
+    // -----------------------------------------------------------------------------------------
+    // Unity lifecycle
+    // -----------------------------------------------------------------------------------------
+
+    private void Awake()
     {
-        // Inicialitzar
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }   
-        
-        // Buscar la càmera
-        playerCamera = GetComponentInChildren<Camera>();
+        _audioSource = GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
+
         if (playerCamera == null)
-        {
             playerCamera = Camera.main;
-        }       
-
-        // Buscar el FirePoint si no està assignat
-        if (firePoint == null)
-        {
-            // Crear un firePoint automàticament si no existeix
-            GameObject fpObj = new GameObject("FirePoint");
-            fpObj.transform.SetParent(playerCamera.transform);
-            fpObj.transform.localPosition = new Vector3(0.3f, -0.2f, 0.5f); // Davant de la càmera
-            firePoint = fpObj.transform;
-            Debug.Log("FirePoint creat automàticament");
-        }
-
-        // Obtenir PlayerInput i l'acció d'atacar
-        playerInput = GetComponent<PlayerInput>();
-        if (playerInput != null)
-        {
-            attackAction = playerInput.actions["Attack"];
-            Debug.Log("Input System configurat correctament");
-        }
-        else
-        {
-            Debug.LogError("NO S'HA TROBAT PlayerInput! Afegeix-lo al Player.");
-        }
 
         if (currentWeapon != null)
-        {
-            currentAmmo = currentWeapon.maxAmmo;
-            Debug.Log($"Arma equipada: {currentWeapon.weaponName} amb {currentAmmo} munició");
-        }
+            _currentAmmo = currentWeapon.maxAmmo;
         else
-        {
-            Debug.LogError("NO HI HA ARMA ASSIGNADA! Arrossega un WeaponData al camp 'Current Weapon'");
-        }
+            Debug.LogError($"{nameof(ShootBehaviour)}: no WeaponData assigned.", this);
     }
 
-    void Update()
+    // -----------------------------------------------------------------------------------------
+    // Public API
+    // -----------------------------------------------------------------------------------------
+
+    /// <summary>
+    /// Attempts to fire. Silently returns if on cooldown or out of ammo.
+    /// Called by the input handler on Attack performed.
+    /// </summary>
+    public void TryShoot()
     {
-        // Comprovar si estem atacant amb el New Input System
-        if (attackAction != null && attackAction.IsPressed())
-        {
-            Shoot();
-        }
+        if (!CanShoot()) return;
+
+        PerformShot();
     }
 
-    void Shoot()
-    {
-        // Comprovar si podem disparar
-        if (Time.time < nextFireTime)
-        {
-            return;
-        }
-
-        if (currentAmmo <= 0)
-        {
-            Debug.Log("Sense munició!");
-            return;
-        }
-
-        Debug.Log($"DISPARANT! Munició: {currentAmmo}/{currentWeapon.maxAmmo}");
-
-        // Disparar raig des del centre de la càmera
-        Vector3 rayOrigin = playerCamera.transform.position;
-        Vector3 rayDirection = playerCamera.transform.forward;
-
-        // Mostrar raig de debug
-        if (showDebugRays)
-        {
-            Debug.DrawRay(rayOrigin, rayDirection * 100f, Color.yellow, 1f);
-        }
-
-        // Raycast
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, 100f))
-        {
-            Debug.Log($"Impacte en: {hit.collider.gameObject.name} a {hit.distance:F1}m");
-
-            // Intentar fer dany
-            IDamageable target = hit.collider.GetComponent<IDamageable>();
-            if (target != null)
-            {
-                target.TakeDamage(currentWeapon.damage);
-                Debug.Log($"{currentWeapon.damage} de dany aplicat a {hit.collider.gameObject.name}!");
-
-                // Línia vermella quan toquem un enemic
-                if (showDebugRays)
-                {
-                    Debug.DrawLine(firePoint.position, hit.point, Color.red, 1f);
-                }                  
-            }
-            else
-            {
-                Debug.Log($"{hit.collider.gameObject.name} no té component Enemy o IDamageable");
-
-                // Línia blava quan toquem algo que no és enemic
-                if (showDebugRays)
-                {
-                    Debug.DrawLine(firePoint.position, hit.point, Color.blue, 1f);
-                }                
-            }
-        }
-        else
-        {
-            Debug.Log("No has tocat res.");
-        }
-
-        // So de disparo
-        if (currentWeapon.shootSound != null)
-        {
-            audioSource.PlayOneShot(currentWeapon.shootSound);
-        }
-            
-
-        // Consumir munició i actualitzar temps
-        currentAmmo--;
-        nextFireTime = Time.time + currentWeapon.fireRate;
-    }
-
-    // Mètode públic per canviar d'arma
+    /// <summary>Swaps the equipped weapon and resets ammo to the new weapon's maximum.</summary>
     public void ChangeWeapon(WeaponData newWeapon)
     {
         currentWeapon = newWeapon;
-        currentAmmo = newWeapon.maxAmmo;
-        Debug.Log($"Arma canviada a: {newWeapon.weaponName}");
+        _currentAmmo  = newWeapon.maxAmmo;
     }
 
-    // Recarregar munició
+    /// <summary>Refills ammo to the current weapon's maximum.</summary>
     public void Reload()
     {
         if (currentWeapon != null)
+            _currentAmmo = currentWeapon.maxAmmo;
+    }
+
+    // -----------------------------------------------------------------------------------------
+    // Private helpers
+    // -----------------------------------------------------------------------------------------
+
+    private bool CanShoot()
+    {
+        if (currentWeapon == null)     return false;
+        if (Time.time < _nextFireTime) return false;
+        if (_currentAmmo <= 0)
         {
-            currentAmmo = currentWeapon.maxAmmo;
-            Debug.Log($"Munició recarregada: {currentAmmo}");
+            Debug.Log("Out of ammo.");
+            return false;
+        }
+        return true;
+    }
+
+    private void PerformShot()
+    {
+        bool hitDamageable = TryHitTarget(out RaycastHit hitInfo);
+
+        DrawDebugRays(hitDamageable, hitInfo);
+
+        if (currentWeapon.shootSound != null)
+            _audioSource.PlayOneShot(currentWeapon.shootSound);
+
+        _currentAmmo--;
+        _nextFireTime = Time.time + currentWeapon.fireRate;
+    }
+
+    private bool TryHitTarget(out RaycastHit hitInfo)
+    {
+        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+
+        if (!Physics.Raycast(ray, out hitInfo, maxDistance: 100f))
+            return false;
+
+        IDamageable target = hitInfo.collider.GetComponent<IDamageable>();
+        target?.TakeDamage(currentWeapon.damage);
+
+        return target != null;
+    }
+
+    private void DrawDebugRays(bool hitDamageable, RaycastHit hitInfo)
+    {
+        if (!showDebugRays) return;
+
+        Debug.DrawRay(playerCamera.transform.position, playerCamera.transform.forward * 100f, Color.yellow, 1f);
+
+        if (hitInfo.collider != null)
+        {
+            Color lineColor = hitDamageable ? Color.red : Color.blue;
+            Debug.DrawLine(firePoint.position, hitInfo.point, lineColor, 1f);
         }
     }
 }
