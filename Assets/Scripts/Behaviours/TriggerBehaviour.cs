@@ -3,9 +3,15 @@ using UnityEngine.Events;
 
 public class TriggerBehaviour : MonoBehaviour
 {
-    [SerializeField] private UnityEvent triggerAction;
+    [Header("Trigger Settings")]
     [SerializeField] private LayerMask layer;
     [SerializeField] private bool selfDisable = true;
+    
+    [Header("OnTriggerEnter")]
+    [SerializeField] private UnityEvent triggerAction;
+    
+    [Header("OnTriggerExit")]
+    [SerializeField] private UnityEvent triggerExitAction;
     
     private void OnTriggerEnter(Collider other)
     {
@@ -17,6 +23,19 @@ public class TriggerBehaviour : MonoBehaviour
             if (triggerAction != null)
             {
                 triggerAction.Invoke();
+                
+                if(selfDisable) gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if ((layer.value & (1 << other.gameObject.layer)) != 0)
+        {
+            if (triggerExitAction != null)
+            {
+                triggerExitAction.Invoke();
                 
                 if(selfDisable) gameObject.SetActive(false);
             }
