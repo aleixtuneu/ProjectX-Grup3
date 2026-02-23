@@ -1,8 +1,7 @@
 using UnityEngine;
 
-// Requires a SphereCollider set as Is Trigger on this GameObject (or a child).
+// Requires a child object with SphereCollider set as Is Trigger.
 // That collider's radius defines the detection range.
-// Requires a second, smaller SphereCollider (non-trigger) for physics if needed.
 [RequireComponent(typeof(Animator))]
 public class EnemyController3D : MonoBehaviour, ICreature
 {
@@ -10,8 +9,11 @@ public class EnemyController3D : MonoBehaviour, ICreature
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private float projectileSpeed = 10f;
     [SerializeField] private Transform firePoint;
-    [SerializeField] private float fireRate = 1.5f;
+    [SerializeField] private float fireRate = 0.2f;
     [SerializeField] private float shootRange = 6f;
+    [SerializeField] private float shootingTime = 2f;
+    [SerializeField] private float shootingTimeVariance = 0.15f; // e.g. 0.15 = +-15%
+    [SerializeField] private float reloadTime = 2f;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 3.5f;
@@ -20,14 +22,17 @@ public class EnemyController3D : MonoBehaviour, ICreature
     [Header("Behaviour")]
     [SerializeField] private float returnDelay = 5f;
 
-    // ── Public read-only data for states ──────────────────────────────────────
-    public float ReturnDelay     => returnDelay;
-    public float FireRate        => fireRate;
-    public Transform Target      { get; private set; }
-    public Vector3 OriginPosition    { get; private set; }
-    public Quaternion OriginRotation { get; private set; }
+    // Public read-only data for states
+    public float ReturnDelay          => returnDelay;
+    public float FireRate             => fireRate;
+    public float ShootingTime         => shootingTime;
+    public float ShootingTimeVariance => shootingTimeVariance;
+    public float ReloadTime           => reloadTime;
+    public Transform Target           { get; private set; }
+    public Vector3 OriginPosition     { get; private set; }
+    public Quaternion OriginRotation  { get; private set; }
 
-    // ── State instances ───────────────────────────────────────────────────────
+    // State instances
     public IdleState           IdleState   { get; private set; }
     public ChaseState          ChaseState  { get; private set; }
     public ReturnToOriginState ReturnState { get; private set; }
@@ -37,8 +42,6 @@ public class EnemyController3D : MonoBehaviour, ICreature
     private SequentialSpawnerBehaviour _spawner;
 
     private static readonly int IsRunning = Animator.StringToHash("IsRunning");
-
-    // ── Unity lifecycle ───────────────────────────────────────────────────────
 
     private void Start()
     {
@@ -62,10 +65,6 @@ public class EnemyController3D : MonoBehaviour, ICreature
         _currentState?.Update();
     }
 
-    // ── Trigger-based detection ───────────────────────────────────────────────
-    // If the SphereCollider (Is Trigger) is on THIS GameObject, Unity calls these directly.
-    // If it's on a child, add EnemyDetectionTrigger to that child — it forwards here.
-
     private void OnTriggerEnter(Collider other) => OnPlayerDetected(other);
     private void OnTriggerExit(Collider other)  => OnPlayerLost(other);
 
@@ -81,19 +80,15 @@ public class EnemyController3D : MonoBehaviour, ICreature
     {
         if (other.gameObject.layer != 6 || other.transform != Target) return;
 
-        // Don't clear target yet — ChaseState owns the return delay timer.
-        // It will transition to ReturnState after returnDelay seconds,
-        // and ReturnState will clear the target on exit.
         _currentState?.OnPlayerLeftTrigger();
     }
 
-    // Called by ReturnToOriginState once the enemy is actually heading back
     public void ClearTarget()
     {
         Target = null;
     }
 
-    // ── FSM ───────────────────────────────────────────────────────────────────
+    // FSM
 
     public void TransitionTo(EnemyState newState)
     {
@@ -102,7 +97,7 @@ public class EnemyController3D : MonoBehaviour, ICreature
         _currentState.Enter();
     }
 
-    // ── ICreature ─────────────────────────────────────────────────────────────
+    // ICreature
 
     public void SetSpawner(SequentialSpawnerBehaviour spawner)
     {
@@ -120,12 +115,11 @@ public class EnemyController3D : MonoBehaviour, ICreature
         Destroy(gameObject);
     }
 
-    // ── Shared queries ────────────────────────────────────────────────────────
+    // Shared queries
 
     public bool IsPlayerInShootRange()
     {
-        bool isInShootRange  = Target ? Vector3.Distance(transform.position, Target.position) <= shootRange : false;
-        return isInShootRange;
+        return Target ? Vector3.Distance(transform.position, Target.position) <= shootRange : false;
     }
 
     public bool HasReachedWanderLimit()
@@ -134,7 +128,7 @@ public class EnemyController3D : MonoBehaviour, ICreature
         return Vector3.Distance(flatPos, OriginPosition) >= maxWanderDistance;
     }
 
-    // ── Shared actions ────────────────────────────────────────────────────────
+    // Shared actions
 
     public void RotateTowardsPlayer()
     {
@@ -142,7 +136,7 @@ public class EnemyController3D : MonoBehaviour, ICreature
         {
             Vector3 direction = Target.position - transform.position;
             direction.y = 0f;
-            if (direction.sqrMagnitude >= 0.001f) 
+            if (direction.sqrMagnitude >= 0.001f)
                 RotateTowards(Quaternion.LookRotation(direction));
         }
     }
@@ -154,7 +148,7 @@ public class EnemyController3D : MonoBehaviour, ICreature
 
     public void MoveTowardsPlayer()
     {
-        if (Target) 
+        if (Target)
             MoveTowards(Target.position);
     }
 
@@ -167,7 +161,6 @@ public class EnemyController3D : MonoBehaviour, ICreature
 
     public void Shoot()
     {
-        //Debug.Log("trying to shoot = " + Target.name + "with: " + projectilePrefab.name);
         if (projectilePrefab && Target)
         {
             Vector3 direction = (Target.position - firePoint.position).normalized;
@@ -183,7 +176,7 @@ public class EnemyController3D : MonoBehaviour, ICreature
         _animator.SetBool(IsRunning, running);
     }
 
-    // ── Editor helpers ────────────────────────────────────────────────────────
+    // Editor helpers
 
     private void OnDrawGizmosSelected()
     {
@@ -196,7 +189,5 @@ public class EnemyController3D : MonoBehaviour, ICreature
         // Wander boundary
         Gizmos.color = new Color(1f, 0.5f, 0f);
         Gizmos.DrawWireSphere(origin, maxWanderDistance);
-
-        // Note: detection range is visualised by the SphereCollider itself in the editor
     }
 }

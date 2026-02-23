@@ -157,6 +157,9 @@ MonoBehaviour:
   firePoint: {fileID: 4815984445291267755}
   fireRate: 0.15
   shootRange: 6
+  shootingTime: 2
+  shootingTimeVariance: 0.15
+  reloadTime: 1
   moveSpeed: 3.5
   maxWanderDistance: 3
   returnDelay: 5
