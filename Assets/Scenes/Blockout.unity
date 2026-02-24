@@ -30632,6 +30632,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spawner
       objectReference: {fileID: 0}
+    - target: {fileID: 3418450496395418069, guid: ab484d1efe71ed74b933599834df7115, type: 3}
+      propertyPath: creaturePairs.Array.data[0].creatureA
+      value: 
+      objectReference: {fileID: 3677378280595627993, guid: 6d23250b7902bf04ca3e7c59df6c9d97, type: 3}
+    - target: {fileID: 3418450496395418069, guid: ab484d1efe71ed74b933599834df7115, type: 3}
+      propertyPath: creaturePairs.Array.data[0].creatureB
+      value: 
+      objectReference: {fileID: 3677378280595627993, guid: 6d23250b7902bf04ca3e7c59df6c9d97, type: 3}
+    - target: {fileID: 3418450496395418069, guid: ab484d1efe71ed74b933599834df7115, type: 3}
+      propertyPath: creaturePairs.Array.data[1].creatureA
+      value: 
+      objectReference: {fileID: 3677378280595627993, guid: 6d23250b7902bf04ca3e7c59df6c9d97, type: 3}
+    - target: {fileID: 3418450496395418069, guid: ab484d1efe71ed74b933599834df7115, type: 3}
+      propertyPath: creaturePairs.Array.data[1].creatureB
+      value: 
+      objectReference: {fileID: 3677378280595627993, guid: 6d23250b7902bf04ca3e7c59df6c9d97, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
