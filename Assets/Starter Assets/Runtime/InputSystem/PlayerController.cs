@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace StarterAssets
 {
-    public class StarterAssetsInputs : MonoBehaviour
+    public class PlayerController : MonoBehaviour
     {
         [Header("Character Input Values")]
         public Vector2 move;
@@ -55,6 +55,7 @@ namespace StarterAssets
 
         public void OnAttack(InputValue value)
         {
+            Debug.Log("OnAttack Called"); //
             if (value.isPressed)
                 _shootBehaviour?.TryShoot();
         }

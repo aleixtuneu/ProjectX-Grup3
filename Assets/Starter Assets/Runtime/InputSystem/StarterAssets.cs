@@ -72,7 +72,7 @@ using UnityEngine.InputSystem.Utilities;
 /// }
 /// </code>
 /// </example>
-public partial class @StarterAssetsInp: IInputActionCollection2, IDisposable
+public partial class @StarterAssetsInputs: IInputActionCollection2, IDisposable
 {
     /// <summary>
     /// Provides access to the underlying asset instance.
@@ -82,7 +82,7 @@ public partial class @StarterAssetsInp: IInputActionCollection2, IDisposable
     /// <summary>
     /// Constructs a new instance.
     /// </summary>
-    public @StarterAssetsInp()
+    public @StarterAssetsInputs()
     {
         asset = InputActionAsset.FromJson(@"{
     ""version"": 1,
@@ -114,7 +114,7 @@ public partial class @StarterAssetsInp: IInputActionCollection2, IDisposable
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""8c4abdf8-4099-493a-aa1a-129acec7c3df"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -443,9 +443,9 @@ public partial class @StarterAssetsInp: IInputActionCollection2, IDisposable
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
     }
 
-    ~@StarterAssetsInp()
+    ~@StarterAssetsInputs()
     {
-        UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, StarterAssetsInp.Player.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, StarterAssetsInputs.Player.Disable() has not been called.");
     }
 
     /// <summary>
@@ -531,12 +531,12 @@ public partial class @StarterAssetsInp: IInputActionCollection2, IDisposable
     /// </summary>
     public struct PlayerActions
     {
-        private @StarterAssetsInp m_Wrapper;
+        private @StarterAssetsInputs m_Wrapper;
 
         /// <summary>
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
-        public PlayerActions(@StarterAssetsInp wrapper) { m_Wrapper = wrapper; }
+        public PlayerActions(@StarterAssetsInputs wrapper) { m_Wrapper = wrapper; }
         /// <summary>
         /// Provides access to the underlying input action "Player/Move".
         /// </summary>

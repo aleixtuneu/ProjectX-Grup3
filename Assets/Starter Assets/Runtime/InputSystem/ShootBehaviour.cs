@@ -39,12 +39,18 @@ public class ShootBehaviour : MonoBehaviour
         _audioSource = GetComponent<AudioSource>() ?? gameObject.AddComponent<AudioSource>();
 
         if (playerCamera == null)
+        {
             playerCamera = Camera.main;
-
+        }
+            
         if (currentWeapon != null)
+        {
             _currentAmmo = currentWeapon.maxAmmo;
+        }          
         else
+        {
             Debug.LogError($"{nameof(ShootBehaviour)}: no WeaponData assigned.", this);
+        }     
     }
 
     // -----------------------------------------------------------------------------------------
@@ -57,6 +63,7 @@ public class ShootBehaviour : MonoBehaviour
     /// </summary>
     public void TryShoot()
     {
+        Debug.Log("TryShoot called"); //
         if (!CanShoot()) return;
 
         PerformShot();
@@ -76,26 +83,36 @@ public class ShootBehaviour : MonoBehaviour
             _currentAmmo = currentWeapon.maxAmmo;
     }
 
-    // -----------------------------------------------------------------------------------------
     // Private helpers
-    // -----------------------------------------------------------------------------------------
 
     private bool CanShoot()
     {
-        if (currentWeapon == null)     return false;
-        if (Time.time < _nextFireTime) return false;
-        if (_currentAmmo <= 0)
+        if (currentWeapon == null)
         {
-            Debug.Log("Out of ammo.");
+            Debug.LogError("CanShoot: currentWeapon is NULL"); //
             return false;
         }
+
+        if (Time.time < _nextFireTime)
+        {
+            Debug.Log("CanShoot: on cooldown"); //
+            return false;
+        }
+            
+        if (_currentAmmo <= 0)
+        {
+            Debug.Log("CanShoot: with no ammo"); //
+            return false;
+        }
+        Debug.Log("CanShoot: CAN SHOOT"); //
         return true;
     }
 
     private void PerformShot()
     {
+        Debug.Log("PerformShot executed"); //
         bool hitDamageable = TryHitTarget(out RaycastHit hitInfo);
-
+        Debug.Log("Hit damageable: " + hitDamageable); //
         DrawDebugRays(hitDamageable, hitInfo);
 
         if (currentWeapon.shootSound != null)
@@ -110,8 +127,10 @@ public class ShootBehaviour : MonoBehaviour
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
 
         if (!Physics.Raycast(ray, out hitInfo, maxDistance: 100f))
+        {
             return false;
-
+        }
+            
         IDamageable target = hitInfo.collider.GetComponent<IDamageable>();
         target?.TakeDamage(currentWeapon.damage);
 
