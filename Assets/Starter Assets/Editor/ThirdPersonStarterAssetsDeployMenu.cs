@@ -1,10 +1,11 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Text;
+using StarterAssets;
 using UnityEditor;
 using UnityEngine;
 
-namespace StarterAssets
+namespace StarterAssetsInp
 {
     public partial class StarterAssetsDeployMenu : ScriptableObject
     {

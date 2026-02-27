@@ -2,7 +2,7 @@ using StarterAssets;
 using UnityEngine;
 
 public class VirtualInput : MonoBehaviour
-{
+{/*
     [Header("Output")]
     public StarterAssetsInputs StarterAssetsInputs;
 
@@ -24,5 +24,5 @@ public class VirtualInput : MonoBehaviour
     public void VirtualSprintInput(bool virtualSprintState)
     {
         StarterAssetsInputs.SprintInput(virtualSprintState);
-    }
+    }*/
 }
