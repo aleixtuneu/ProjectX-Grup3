@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     
     // Lives System
     private int _livesRemaining = 0;
+    private bool _hasRespawnInvulnerable = false;
     
     // Checkpoint System
     private Vector3 _lastCheckpointPosition;
@@ -143,21 +144,35 @@ public class GameManager : MonoBehaviour
 
     public void PlayerDied()
     {
-        if (_currentState != GameState.Playing) return;
+        if (_currentState != GameState.Playing || _hasRespawnInvulnerable) return;
 
         _livesRemaining--;
         OnLivesChanged?.Invoke(_livesRemaining);
+        
+        if (!_hasRespawnInvulnerable)
+        {
+            if (_livesRemaining > 0)
+            {
+                // Respawn player
+                OnPlayerRespawn?.Invoke(_lastCheckpointPosition, _livesRemaining);
+            }
+            else
+            {
+                // Game Over
+                TriggerGameOver();
+            }
 
-        if (_livesRemaining > 0)
-        {
-            // Respawn player
-            OnPlayerRespawn?.Invoke(_lastCheckpointPosition, _livesRemaining);
+            _hasRespawnInvulnerable = true;
         }
-        else
-        {
-            // Game Over
-            TriggerGameOver();
-        }
+    }
+
+    /// <summary>
+    /// After the player dies, he should respawn, and once he's repositioned and ready,
+    /// call this so he can take damage again.
+    /// </summary>
+    public void HasRespawned()
+    {
+        _hasRespawnInvulnerable = false;
     }
 
     public int GetLivesRemaining()
