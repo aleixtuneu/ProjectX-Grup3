@@ -1,167 +1,63 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class ShootBehaviour : MonoBehaviour
 {
-    public WeaponData currentWeapon;
-    public Transform firePoint; 
-    public LayerMask enemyLayer; 
+    [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private WeaponData weapon;
+    [SerializeField] private Transform shootOrigin;
 
-    public bool showDebugRays = true;
+    private InputSystem_Actions _inputActions;
+    private float _lastShotTime;
 
-    private int currentAmmo;
-    private float nextFireTime;
-    private AudioSource audioSource;
-    private Camera playerCamera;
-    private PlayerInput playerInput;
-    private InputAction attackAction;
-
-    void Start()
+    private void Awake()
     {
-        // Inicialitzar
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }   
-        
-        // Buscar la càmera
-        playerCamera = GetComponentInChildren<Camera>();
-        if (playerCamera == null)
-        {
-            playerCamera = Camera.main;
-        }       
+        if (!shootOrigin)
+            shootOrigin = transform;
 
-        // Buscar el FirePoint si no està assignat
-        if (firePoint == null)
-        {
-            // Crear un firePoint automàticament si no existeix
-            GameObject fpObj = new GameObject("FirePoint");
-            fpObj.transform.SetParent(playerCamera.transform);
-            fpObj.transform.localPosition = new Vector3(0.3f, -0.2f, 0.5f); // Davant de la càmera
-            firePoint = fpObj.transform;
-            Debug.Log("FirePoint creat automàticament");
-        }
+        _inputActions = new InputSystem_Actions();
+        _inputActions.Player.Enable();
+    }
 
-        // Obtenir PlayerInput i l'acció d'atacar
-        playerInput = GetComponent<PlayerInput>();
-        if (playerInput != null)
+    private void Update()
+    {
+        if (_inputActions.Player.Shoot.IsPressed())
         {
-            attackAction = playerInput.actions["Attack"];
-            Debug.Log("Input System configurat correctament");
-        }
-        else
-        {
-            Debug.LogError("NO S'HA TROBAT PlayerInput! Afegeix-lo al Player.");
-        }
-
-        if (currentWeapon != null)
-        {
-            currentAmmo = currentWeapon.maxAmmo;
-            Debug.Log($"Arma equipada: {currentWeapon.weaponName} amb {currentAmmo} munició");
-        }
-        else
-        {
-            Debug.LogError("NO HI HA ARMA ASSIGNADA! Arrossega un WeaponData al camp 'Current Weapon'");
+            TryShoot();
         }
     }
 
-    void Update()
+    private void TryShoot()
     {
-        // Comprovar si estem atacant amb el New Input System
-        if (attackAction != null && attackAction.IsPressed())
-        {
-            Shoot();
-        }
+        if (Time.time - _lastShotTime < weapon.fireRate)
+            return;
+
+        Shoot();
+        _lastShotTime = Time.time;
     }
 
-    void Shoot()
+    private void Shoot()
     {
-        // Comprovar si podem disparar
-        if (Time.time < nextFireTime)
+        Vector3 origin = shootOrigin.position;
+        Vector3 direction = shootOrigin.forward;
+
+        RaycastHit hit;
+        if (Physics.Raycast(origin, direction, out hit, weapon.raycastDistance, enemyLayer))
         {
-            return;
-        }
-
-        if (currentAmmo <= 0)
-        {
-            Debug.Log("Sense munició!");
-            return;
-        }
-
-        Debug.Log($"DISPARANT! Munició: {currentAmmo}/{currentWeapon.maxAmmo}");
-
-        // Disparar raig des del centre de la càmera
-        Vector3 rayOrigin = playerCamera.transform.position;
-        Vector3 rayDirection = playerCamera.transform.forward;
-
-        // Mostrar raig de debug
-        if (showDebugRays)
-        {
-            Debug.DrawRay(rayOrigin, rayDirection * 100f, Color.yellow, 1f);
-        }
-
-        // Raycast
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hit, 100f))
-        {
-            Debug.Log($"Impacte en: {hit.collider.gameObject.name} a {hit.distance:F1}m");
-
-            // Intentar fer dany
-            IDamageable target = hit.collider.GetComponent<IDamageable>();
-            if (target != null)
+            IDamagable damagable = hit.collider.GetComponent<IDamagable>();
+            if (damagable != null)
             {
-                target.TakeDamage(currentWeapon.damage);
-                Debug.Log($"{currentWeapon.damage} de dany aplicat a {hit.collider.gameObject.name}!");
-
-                // Línia vermella quan toquem un enemic
-                if (showDebugRays)
-                {
-                    Debug.DrawLine(firePoint.position, hit.point, Color.red, 1f);
-                }                  
-            }
-            else
-            {
-                Debug.Log($"{hit.collider.gameObject.name} no té component Enemy o IDamageable");
-
-                // Línia blava quan toquem algo que no és enemic
-                if (showDebugRays)
-                {
-                    Debug.DrawLine(firePoint.position, hit.point, Color.blue, 1f);
-                }                
+                damagable.TakeDamage(weapon.damagePerShot);
+                Debug.Log($"¡Hitted {hit.collider.name}!");
             }
         }
-        else
-        {
-            Debug.Log("No has tocat res.");
-        }
-
-        // So de disparo
-        if (currentWeapon.shootSound != null)
-        {
-            audioSource.PlayOneShot(currentWeapon.shootSound);
-        }
-            
-
-        // Consumir munició i actualitzar temps
-        currentAmmo--;
-        nextFireTime = Time.time + currentWeapon.fireRate;
     }
 
-    // Mètode públic per canviar d'arma
-    public void ChangeWeapon(WeaponData newWeapon)
+    private void OnDestroy()
     {
-        currentWeapon = newWeapon;
-        currentAmmo = newWeapon.maxAmmo;
-        Debug.Log($"Arma canviada a: {newWeapon.weaponName}");
-    }
-
-    // Recarregar munició
-    public void Reload()
-    {
-        if (currentWeapon != null)
+        if (_inputActions != null)
         {
-            currentAmmo = currentWeapon.maxAmmo;
-            Debug.Log($"Munició recarregada: {currentAmmo}");
+            _inputActions.Player.Disable();
+            _inputActions.Dispose();
         }
     }
 }

@@ -119,6 +119,24 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &10297451 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3677378280595627993, guid: 6d23250b7902bf04ca3e7c59df6c9d97, type: 3}
+  m_PrefabInstance: {fileID: 3319265183951407152}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &10297456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10297451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad88d6396fbf34846b5ca2e3d96d5bb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealthBehaviour
+  maxHealth: 30
 --- !u!1 &32473595
 GameObject:
   m_ObjectHideFlags: 0
@@ -3136,6 +3154,16 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 290955033}
   m_CullTransparentMesh: 1
+--- !u!1 &300312329 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7602823781861539772, guid: 2c4a1eafd76e64146ae9b7670f3c697b, type: 3}
+  m_PrefabInstance: {fileID: 774415573}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &300654034 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -2093772787462966335, guid: 2c4a1eafd76e64146ae9b7670f3c697b, type: 3}
+  m_PrefabInstance: {fileID: 774415573}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &326315864
 GameObject:
   m_ObjectHideFlags: 0
@@ -4973,6 +5001,33 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &445118482 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5013789761440143653, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
+  m_PrefabInstance: {fileID: 1151009256}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &445118489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445118482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80fb916b88584da49951af0775e31db5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShootBehaviour
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  weapon: {fileID: 11400000, guid: 6da78655f7fb48544b9127309bf5ebd3, type: 2}
+  shootOrigin: {fileID: 1423536815}
+--- !u!4 &445118490 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5683366351936226207, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
+  m_PrefabInstance: {fileID: 1151009256}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &454208028
 GameObject:
   m_ObjectHideFlags: 0
@@ -11658,6 +11713,69 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!1001 &774415573
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 2c4a1eafd76e64146ae9b7670f3c697b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.87
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2c4a1eafd76e64146ae9b7670f3c697b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.877727
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2c4a1eafd76e64146ae9b7670f3c697b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2c4a1eafd76e64146ae9b7670f3c697b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2c4a1eafd76e64146ae9b7670f3c697b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2c4a1eafd76e64146ae9b7670f3c697b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2c4a1eafd76e64146ae9b7670f3c697b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2c4a1eafd76e64146ae9b7670f3c697b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2c4a1eafd76e64146ae9b7670f3c697b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 2c4a1eafd76e64146ae9b7670f3c697b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2c4a1eafd76e64146ae9b7670f3c697b, type: 3}
+      propertyPath: m_Name
+      value: tanque enemigo
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c4a1eafd76e64146ae9b7670f3c697b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1178593456}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c4a1eafd76e64146ae9b7670f3c697b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1178593455}
+  m_SourcePrefab: {fileID: 100100000, guid: 2c4a1eafd76e64146ae9b7670f3c697b, type: 3}
 --- !u!43 &775340102
 Mesh:
   m_ObjectHideFlags: 0
@@ -16607,6 +16725,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 197356229882831426, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 6090656687526757036, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -16650,7 +16772,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5013789761440143653, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 445118489}
   m_SourcePrefab: {fileID: 100100000, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
 --- !u!1 &1158689486
 GameObject:
@@ -16894,6 +17019,42 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &1178593454 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2c4a1eafd76e64146ae9b7670f3c697b, type: 3}
+  m_PrefabInstance: {fileID: 774415573}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1178593455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1178593454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0df2b7aa14f5df144856ee210df15cba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TankInteraction
+  interactionRange: 6
+  tankController: {fileID: 1178593456}
+  tankPosition: {fileID: 300654034}
+  playerTransform: {fileID: 445118490}
+--- !u!114 &1178593456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1178593454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 981b78987364f76499f4118e35f67176, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TankController
+  tankWeapon: {fileID: 11400000, guid: 2a5d09cfcf0953a43ae8c6b88c0fe01d, type: 2}
+  cannonUI: {fileID: 300312329}
+  dismountDistance: 2
 --- !u!1 &1181173584
 GameObject:
   m_ObjectHideFlags: 0
@@ -20038,6 +20199,11 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!4 &1423536815 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8166801105675623601, guid: 98dfac0280a4eda428bae29c16882944, type: 3}
+  m_PrefabInstance: {fileID: 1151009256}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1429570280
 GameObject:
   m_ObjectHideFlags: 0
@@ -30578,7 +30744,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3677378280595627993, guid: 6d23250b7902bf04ca3e7c59df6c9d97, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 10297456}
   m_SourcePrefab: {fileID: 100100000, guid: 6d23250b7902bf04ca3e7c59df6c9d97, type: 3}
 --- !u!1001 &3985953057345246300
 PrefabInstance:
@@ -30666,3 +30835,4 @@ SceneRoots:
   - {fileID: 1861440625}
   - {fileID: 3985953057345246300}
   - {fileID: 3319265183951407152}
+  - {fileID: 774415573}

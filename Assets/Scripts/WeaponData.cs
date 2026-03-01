@@ -1,11 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Weapon", menuName = "Metal Slug/Weapon")]
+[CreateAssetMenu(fileName = "New Weapon", menuName = "Weapons/Weapon Data")]
 public class WeaponData : ScriptableObject
 {
-    public string weaponName = "Pistola";
-    public float damage = 10f;
-    public float fireRate = 0.2f; // Temps entre dispars
-    public int maxAmmo = 200;
-    public AudioClip shootSound;
+    [SerializeField] public string weaponName = "Default Gun";
+    [SerializeField] public int damagePerShot = 10;
+    [SerializeField] public float fireRate = 0.2f;
+    [SerializeField] public float raycastDistance = 100f;
 }

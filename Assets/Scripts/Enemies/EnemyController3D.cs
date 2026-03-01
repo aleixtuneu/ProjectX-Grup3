@@ -3,8 +3,11 @@ using UnityEngine;
 // Requires a child object with SphereCollider set as Is Trigger.
 // That collider's radius defines the detection range.
 [RequireComponent(typeof(Animator))]
-public class EnemyController3D : MonoBehaviour, ICreature
+public class EnemyController3D : MonoBehaviour, ICreature, IDamagable
 {
+    [Header("Salud")]
+    [SerializeField] private int maxHealth = 30;
+
     [Header("Shooting")]
     [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private float projectileSpeed = 10f;
@@ -12,7 +15,7 @@ public class EnemyController3D : MonoBehaviour, ICreature
     [SerializeField] private float fireRate = 0.2f;
     [SerializeField] private float shootRange = 6f;
     [SerializeField] private float shootingTime = 2f;
-    [SerializeField] private float shootingTimeVariance = 0.15f; // e.g. 0.15 = +-15%
+    [SerializeField] private float shootingTimeVariance = 0.15f;
     [SerializeField] private float reloadTime = 2f;
 
     [Header("Movement")]
@@ -23,29 +26,31 @@ public class EnemyController3D : MonoBehaviour, ICreature
     [SerializeField] private float returnDelay = 5f;
 
     // Public read-only data for states
-    public float ReturnDelay          => returnDelay;
-    public float FireRate             => fireRate;
-    public float ShootingTime         => shootingTime;
+    public float ReturnDelay => returnDelay;
+    public float FireRate => fireRate;
+    public float ShootingTime => shootingTime;
     public float ShootingTimeVariance => shootingTimeVariance;
-    public float ReloadTime           => reloadTime;
-    public Transform Target           { get; private set; }
-    public Vector3 OriginPosition     { get; private set; }
-    public Quaternion OriginRotation  { get; private set; }
+    public float ReloadTime => reloadTime;
+    public Transform Target { get; private set; }
+    public Vector3 OriginPosition { get; private set; }
+    public Quaternion OriginRotation { get; private set; }
 
     // State instances
-    public IdleState           IdleState   { get; private set; }
-    public ChaseState          ChaseState  { get; private set; }
+    public IdleState IdleState { get; private set; }
+    public ChaseState ChaseState { get; private set; }
     public ReturnToOriginState ReturnState { get; private set; }
 
     private EnemyState _currentState;
     private Animator _animator;
     private SequentialSpawnerBehaviour _spawner;
+    private int _currentHealth;
 
     private static readonly int IsRunning = Animator.StringToHash("IsRunning");
 
     private void Start()
     {
         _animator = GetComponent<Animator>();
+        _currentHealth = maxHealth;
 
         OriginPosition = transform.position;
         OriginRotation = transform.rotation;
@@ -53,8 +58,8 @@ public class EnemyController3D : MonoBehaviour, ICreature
         if (!firePoint)
             firePoint = transform;
 
-        IdleState   = new IdleState(this);
-        ChaseState  = new ChaseState(this);
+        IdleState = new IdleState(this);
+        ChaseState = new ChaseState(this);
         ReturnState = new ReturnToOriginState(this);
 
         TransitionTo(IdleState);
@@ -66,7 +71,7 @@ public class EnemyController3D : MonoBehaviour, ICreature
     }
 
     private void OnTriggerEnter(Collider other) => OnPlayerDetected(other);
-    private void OnTriggerExit(Collider other)  => OnPlayerLost(other);
+    private void OnTriggerExit(Collider other) => OnPlayerLost(other);
 
     public void OnPlayerDetected(Collider other)
     {
@@ -107,6 +112,19 @@ public class EnemyController3D : MonoBehaviour, ICreature
     public void OnHealthDepleted()
     {
         Die();
+    }
+
+    // IDamagable
+
+    public void TakeDamage(int damage)
+    {
+        _currentHealth -= damage;
+        Debug.Log($"{gameObject.name} recibió {damage} daño. Salud: {_currentHealth}/{maxHealth}");
+
+        if (_currentHealth <= 0)
+        {
+            Die();
+        }
     }
 
     private void Die()
