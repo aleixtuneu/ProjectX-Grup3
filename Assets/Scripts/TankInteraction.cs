@@ -28,8 +28,8 @@ public class TankInteraction : MonoBehaviour
         float distance = Vector3.Distance(tankPosition.position, playerTransform.position);
         _isPlayerNear = distance < interactionRange;
 
-        Debug.Log($"Tank pos: {tankPosition.position}, Player pos: {playerTransform.position}");
-        Debug.Log($"Distance: {distance:F2}, Close: {_isPlayerNear}");
+        // Debug.Log($"Tank pos: {tankPosition.position}, Player pos: {playerTransform.position}");
+        // Debug.Log($"Distance: {distance:F2}, Close: {_isPlayerNear}");
 
         if (_isPlayerNear && _inputActions.Player.Interact.WasPressedThisFrame())
         {
