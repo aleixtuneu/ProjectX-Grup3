@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     [Header("Game Configuration")]
     [SerializeField] private int totalCheckpoints = 5;
     [SerializeField] private int startingLives = 3;
-    [SerializeField] private Vector3 defaultSpawnPosition = Vector3.zero;
+    [SerializeField] private Vector3 defaultSpawnPosition = new Vector3(0,2.625f,0);
 
     // Game State
     private GameState _currentState = GameState.Playing;
