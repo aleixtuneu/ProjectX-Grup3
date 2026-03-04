@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6837739688854452545
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1362149407825593582}
+  - component: {fileID: 1921352919472766505}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1362149407825593582
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6837739688854452545}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 233.40773, y: 88.75778, z: 27.05467}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1921352919472766505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6837739688854452545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 932da7f4c65206f45b2f2e15fcff66c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIManager
+  txtScore: {fileID: 0}
+  txtLives: {fileID: 0}
+  pauseMenuPanel: {fileID: 0}
+  resumeButton: {fileID: 0}
+  menuButtonPause: {fileID: 0}
+  gameOverPanel: {fileID: 0}
+  txtGameOverScore: {fileID: 0}
+  menuButtonGameOver: {fileID: 0}
+  restartButton: {fileID: 0}
+  txtInformationUI: {fileID: 0}
+  txtCheckpoint: Checkpoint reached!
+  textWeaponUnlock: New weapon!
+  informationDisplayDuration: 2
+  winPanel: {fileID: 0}
+  txtWinMessage: {fileID: 0}
+  txtWinScore: {fileID: 0}
+  menuButtonWin: {fileID: 0}
+  textWinning: YOU WON!
+  finalDialoguePanel: {fileID: 0}
+  finalDialogueText: {fileID: 0}
+  finalDialogueMessage: "MISSION 1 COMPLETE\u2026 BUT THE WAR HAS ONLY JUST BEGUN."
+  typewriterSpeed: 0.05
