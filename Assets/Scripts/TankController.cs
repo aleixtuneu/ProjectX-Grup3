@@ -1,12 +1,15 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TankController : MonoBehaviour
 {
     [SerializeField] private WeaponData tankWeapon;
     [SerializeField] private GameObject cannonUI;
+    [SerializeField] private GameObject cannonObject;
     [SerializeField] private float dismountDistance = 2f;
 
     private bool _isPlayerMounted = false;
+    private bool _justMounted = false;
     private float _lastShotTime;
     private Transform _playerTransform;
     private InputSystem_Actions _inputActions;
@@ -23,6 +26,13 @@ public class TankController : MonoBehaviour
     {
         if (!_isPlayerMounted) 
             return;
+
+        // Validar que es la primera vegada que monta
+        if (_justMounted)
+        {
+            _justMounted = false;
+            return;
+        }
 
         // Disparar des del tanc
         if (_inputActions.Player.Shoot.WasPressedThisFrame())
@@ -42,6 +52,7 @@ public class TankController : MonoBehaviour
     {
         _playerTransform = playerTransform;
         _isPlayerMounted = true;
+        _justMounted = true;
 
         // Desactivar renderers del tanc
         foreach (Renderer renderer in _allRenderers)
@@ -50,13 +61,26 @@ public class TankController : MonoBehaviour
         }
 
         // Mostrar canó per pantalla
+        if (cannonObject)
+        {
+            cannonObject.SetActive(true);
+            Renderer r = cannonObject.GetComponentInChildren<Renderer>();
+            if (r) r.enabled = true; // Forzar renderer activo
+            Debug.Log($"Renderer enabled: {r?.enabled}");
+        }
+        else
+        {
+            Debug.LogWarning("playerCannonObject is NULL!");
+        }
+        //
         if (cannonUI)
             cannonUI.SetActive(true);
+        //
 
         // Desactivar TankInteraction
         GetComponent<TankInteraction>().enabled = false;
 
-        Debug.Log("¡Mounted on tank!");
+        Debug.Log("Mounted on tank!");
     }
 
     public void Dismount()
@@ -81,8 +105,12 @@ public class TankController : MonoBehaviour
         }
 
         // Ocultar canó
+        if (cannonObject)
+            cannonObject.SetActive(false);
+        //
         if (cannonUI)
             cannonUI.SetActive(false);
+        //
 
         // Reactivar TankInteraction
         GetComponent<TankInteraction>().enabled = true;
@@ -100,7 +128,7 @@ public class TankController : MonoBehaviour
             return;
 
         // Disparar on apunta la càmera
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
         LayerMask enemyLayer = LayerMask.GetMask("Enemy");
 
