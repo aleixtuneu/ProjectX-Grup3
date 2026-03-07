@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.015
+  m_FogDensity: 0.005
   m_LinearFogStart: 0
   m_LinearFogEnd: 29.3
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.41960785, g: 0.52699345, b: 0.627451, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 4067de1a02072244798361060c5e7325, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 0.75
   m_FlareFadeSpeed: 3
@@ -10135,31 +10135,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8390578724457790220, guid: bdb21404085f6d84ebc3ccb4920b751f, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.88955975
+      value: 0.49050006
       objectReference: {fileID: 0}
     - target: {fileID: 8390578724457790220, guid: bdb21404085f6d84ebc3ccb4920b751f, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.4542387
+      value: 0.16097724
       objectReference: {fileID: 0}
     - target: {fileID: 8390578724457790220, guid: bdb21404085f6d84ebc3ccb4920b751f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.03352998
+      value: 0.8328829
       objectReference: {fileID: 0}
     - target: {fileID: 8390578724457790220, guid: bdb21404085f6d84ebc3ccb4920b751f, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.035021182
+      value: -0.1995046
       objectReference: {fileID: 0}
     - target: {fileID: 8390578724457790220, guid: bdb21404085f6d84ebc3ccb4920b751f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 54.144
+      value: 29.357
       objectReference: {fileID: 0}
     - target: {fileID: 8390578724457790220, guid: bdb21404085f6d84ebc3ccb4920b751f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -2.724
+      value: 120.26
       objectReference: {fileID: 0}
     - target: {fileID: 8390578724457790220, guid: bdb21404085f6d84ebc3ccb4920b751f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 3.117
+      value: 4.767
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13476,7 +13476,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2139813934}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
