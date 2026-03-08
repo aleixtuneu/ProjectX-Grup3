@@ -4,6 +4,10 @@ using UnityEngine.UI;
 
 public class AudioSettingsManager : MonoBehaviour
 {
+    private const string KEY_MASTER = "MasterVol";
+    private const string KEY_MUSIC  = "MusicVol";
+    private const string KEY_SFX    = "SFXVol";
+    
     [SerializeField] private AudioMixer mixer;
 
     [SerializeField] private Slider sliderMaster;
@@ -21,40 +25,19 @@ public class AudioSettingsManager : MonoBehaviour
     private void Start()
     {
         // Debug.Log("Start AudioSettingsManager LoadVolumeLevel");
-        LoadVolumeLevel(1);
-        LoadVolumeLevel(2);
-        LoadVolumeLevel(3);
+        ProcessVolumeLoad(KEY_MASTER, sliderMaster);
+        ProcessVolumeLoad(KEY_MUSIC, sliderMusic);
+        ProcessVolumeLoad(KEY_SFX, sliderSFX);
         // Debug.Log("Ending AudioSettingsManager LoadVolumeLevel");
     }
 
-    public void LoadVolumeLevel(int sliderNum)
+    private void ProcessVolumeLoad(string keyName, Slider slider)
     {
-        switch (sliderNum)
-        {
-            case 1:
-                ProcessVolumeLoad(sliderMaster.transform.name, sliderMaster);
-                break;
-                
-            case 2:
-                ProcessVolumeLoad(sliderMusic.transform.name, sliderMusic);
-                break;
+        // Debug.Log(keyName + "'s PlayerPrefs loading returns: "+ PlayerPrefs.GetFloat(keyName, 0.5f));
 
-            case 3:
-                ProcessVolumeLoad(sliderSFX.transform.name, sliderSFX);
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    private void ProcessVolumeLoad(string sliderName, Slider slider)
-    {
-        // Debug.Log(sliderName + "'s PlayerPrefs loading returns: "+ PlayerPrefs.GetFloat(sliderName, 0.5f));
-
-        _volumeVal = PlayerPrefs.GetFloat(sliderName, 0.5f);
+        _volumeVal = PlayerPrefs.GetFloat(keyName, 0.5f);
         slider.value = _volumeVal;
-        mixer.SetFloat(sliderName, Mathf.Log10(_volumeVal) * 20);
+        mixer.SetFloat(keyName, Mathf.Log10(_volumeVal) * 20);
     }
 
     public void SaveVolumeLevel(int sliderNum, float sliderVal)
@@ -63,17 +46,17 @@ public class AudioSettingsManager : MonoBehaviour
         {
             case 1:
                 // Debug.Log("Saving MasterVol");
-                SaveSlider(sliderVal, sliderMaster.transform.name);
+                SaveSlider(sliderVal, KEY_MASTER);
                 break;
                 
             case 2:
                 // Debug.Log("Saving MusicVol");
-                SaveSlider(sliderVal, sliderMusic.transform.name);
+                SaveSlider(sliderVal, KEY_MUSIC);
                 break;
 
             case 3:
                 // Debug.Log("Saving SFXVol");
-                SaveSlider(sliderVal, sliderSFX.transform.name);
+                SaveSlider(sliderVal, KEY_SFX);
                 break;
 
             default:
@@ -82,13 +65,13 @@ public class AudioSettingsManager : MonoBehaviour
         // Debug.Log("AudioSettingsManager.cs, searching for slider num " + sliderNum);
     }
 
-    private void SaveSlider(float sliderVal, string sliderName)
+    private void SaveSlider(float sliderVal, string keyName)
     {
-        // Debug.Log(sliderName + ": Saving value " + sliderVal + " to PlayerPrefs");
+        // Debug.Log(keyName + ": Saving value " + sliderVal + " to PlayerPrefs");
         _volumeVal = sliderVal;
-        mixer.SetFloat(sliderName, Mathf.Log10(_volumeVal) * 20); 
-        PlayerPrefs.SetFloat(sliderName, _volumeVal);
-        // Debug.Log(sliderName + ": Saved" + PlayerPrefs.GetFloat(sliderName, 0.5f));
+        mixer.SetFloat(keyName, Mathf.Log10(_volumeVal) * 20); 
+        PlayerPrefs.SetFloat(keyName, _volumeVal);
+        // Debug.Log(keyName + ": Saved" + PlayerPrefs.GetFloat(keyName, 0.5f));
     }
     
     public void SetMasterVolume(float vol)
