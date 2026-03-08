@@ -23,6 +23,7 @@ public class Projectile3D : MonoBehaviour
     {
         if (other.gameObject.layer != 7 && other.gameObject.layer != 2)
         {
+            Debug.Log("Collided with = " + other.transform.name + ", layer number = " + other.gameObject.layer);
             if (other.gameObject.layer == 6)
             {
                 GameManager.Instance.PlayerDied();
