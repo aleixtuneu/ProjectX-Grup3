@@ -886,7 +886,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   totalCheckpoints: 5
   startingLives: 3
-  defaultSpawnPosition: {x: 0, y: 0, z: 0}
+  defaultSpawnPosition: {x: 3.4, y: 2.625, z: 4.41}
 --- !u!4 &66964830
 Transform:
   m_ObjectHideFlags: 0
