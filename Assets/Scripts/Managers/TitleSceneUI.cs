@@ -21,8 +21,7 @@ public class TitleSceneUI : MonoBehaviour
 
     private void OnPlayClicked()
     {
-        SceneManager.LoadScene(sceneBuildIndex: 1);
-        Cursor.lockState = CursorLockMode.Locked;
+        SceneManager.LoadScene("Scene001");
     }
 
     private void OnSettingsClicked()

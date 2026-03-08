@@ -142,6 +142,10 @@ public class TankController : MonoBehaviour
             }
         }
 
+        // Tank shooting sound
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.Play(AudioClips.TankShot, transform.position);
+
         _lastShotTime = Time.time;
     }
 

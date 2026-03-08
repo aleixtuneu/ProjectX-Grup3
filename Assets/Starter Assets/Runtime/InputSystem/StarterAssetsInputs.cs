@@ -64,7 +64,8 @@ namespace StarterAssets
 		public void SprintInput(bool newSprintState)
 		{
 			sprint = newSprintState;
-		}
+            Debug.Log($"Sprint input: {newSprintState}");
+        }
 		
 		private void OnApplicationFocus(bool hasFocus)
 		{
@@ -75,6 +76,6 @@ namespace StarterAssets
 		{
 			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
 		}
-	}
+    }
 	
 }

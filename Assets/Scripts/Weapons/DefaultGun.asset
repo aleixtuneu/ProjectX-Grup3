@@ -15,6 +15,4 @@ MonoBehaviour:
   weaponName: Default Gun
   damagePerShot: 10
   fireRate: 0.2
-  raycastDistance: 100
-  maxAmmo: 100
-  infiniteAmmo: 1
+  raycastDistance: 15

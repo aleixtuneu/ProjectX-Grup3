@@ -50,6 +50,10 @@ public class ShootBehaviour : MonoBehaviour
                 Debug.Log($"¡Hitted {hit.collider.name}!");
             }
         }
+
+        // Normal shoot sound
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.Play(AudioClips.NormalShot, shootOrigin.position);
     }
 
     private void OnDestroy()

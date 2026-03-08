@@ -1,9 +1,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//
+public enum AudioClips
+{
+    Jump,
+    NormalShot,
+    TankShot,
+    FootSteps,
+    Sprint,
+    GameOver,
+    ThankYoy,
+    Laugh,
+    NoSound,
+    EnemyShot
+}
+//
+
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
+
+    //
+    [SerializeField] private List<AudioClip> _clips = new List<AudioClip>();
+    private Dictionary<AudioClips, AudioClip> clipList = new Dictionary<AudioClips, AudioClip>();
+    //
 
     [SerializeField] private AudioSource sfxAudioSourcePrefab; // Prefab for 3D event sounds
 
@@ -13,6 +34,7 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            InitializeClipDictionary();
         }
         else
         {
@@ -20,16 +42,47 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    // Play non-spatialized event SFX globally (e.g., UI clicks)
-    public void Play(AudioClip clip)
+    private void InitializeClipDictionary()
     {
-        if (clip != null && Camera.main != null)
-                AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position, 1f);
+        clipList.Clear();
+        if (_clips.Count < System.Enum.GetValues(typeof(AudioClips)).Length)
+        {
+            Debug.LogError("There aren't enough audio clips asigned on AudioManager!");
+        }
+        else
+        {
+            int i = 0;
+            foreach (AudioClips clipName in System.Enum.GetValues(typeof(AudioClips)))
+            {
+                clipList[clipName] = _clips[i];
+                i++;
+            }
+        }
+    }
+
+    public AudioClip GetClip(AudioClips clipName)
+    {
+        if (clipList.ContainsKey(clipName))
+            return clipList[clipName];
+
+        Debug.LogError("Audio clip not found on AudioManager: " + clipName);
+        return _clips.Count > 0 ? _clips[0] : null;
+    }
+
+    // Play non-spatialized event SFX globally (e.g., UI clicks)
+    public void Play(AudioClips clipName)
+    {
+        AudioClip clip = GetClip(clipName);
+
+        if (clip != null)
+            AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position, 1f);
     }
 
     // Override to play spatialized event SFX at a position in world
-    public void Play(AudioClip clip, Vector3 position)
+    public void Play(AudioClips clipName, Vector3 position)
     {
+        AudioClip clip = GetClip(clipName);
+
         if (clip != null)
         {
             AudioSource newSource = Instantiate(sfxAudioSourcePrefab, position, Quaternion.identity);
@@ -44,8 +97,10 @@ public class AudioManager : MonoBehaviour
     }
     
     // Override to play spatialized event SFX at a position in world with a custom radius
-    public void Play(AudioClip clip, Vector3 position, float minDistance, float maxDistance)
+    public void Play(AudioClips clipName, Vector3 position, float minDistance, float maxDistance)
     {
+        AudioClip clip = GetClip(clipName);
+
         if (clip != null)
         {
             AudioSource newSource = Instantiate(sfxAudioSourcePrefab, position, Quaternion.identity);

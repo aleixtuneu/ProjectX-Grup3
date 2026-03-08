@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     [Header("Game Configuration")]
     [SerializeField] private int totalCheckpoints = 5;
     [SerializeField] private int startingLives = 3;
-    [SerializeField] private Transform defaultSpawnPosition;
+    [SerializeField] private Vector3 defaultSpawnPosition = new Vector3(0,2.625f,0);
 
     // Game State
     private GameState _currentState = GameState.Playing;
@@ -106,12 +106,17 @@ public class GameManager : MonoBehaviour
     {
         _currentScore = 0;
         _livesRemaining = startingLives;
-        _lastCheckpointPosition = defaultSpawnPosition.position;
+        _lastCheckpointPosition = defaultSpawnPosition;
         _lastCheckpointNumber = 0;
         
         ChangeState(GameState.Playing);
         Time.timeScale = 1f;
-        
+
+        //
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        //
+
         OnScoreChanged?.Invoke(_currentScore);
         OnLivesChanged?.Invoke(_livesRemaining);
     }
@@ -232,6 +237,11 @@ public class GameManager : MonoBehaviour
             ChangeState(GameState.Paused);
             Time.timeScale = 0f;
             
+            //
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            //
+
             _inputActions.Player.Disable();
             _inputActions.UI.Enable();
         }
@@ -244,7 +254,12 @@ public class GameManager : MonoBehaviour
         {
             ChangeState(GameState.Playing);
             Time.timeScale = 1f;
-            
+
+            //
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            //
+
             _inputActions.Player.Enable();
             _inputActions.UI.Disable();
         }
