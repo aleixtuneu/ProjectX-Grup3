@@ -45,7 +45,9 @@ public class EnemyController3D : MonoBehaviour, ICreature, IDamagable
     private SequentialSpawnerBehaviour _spawner;
     private int _currentHealth;
 
-    private static readonly int IsRunning = Animator.StringToHash("IsRunning");
+    // Animator parameter hashes
+    private static readonly int HashIsRunning  = Animator.StringToHash("IsRunning");
+    private static readonly int HashIsShooting = Animator.StringToHash("IsShooting");
 
     private void Start()
     {
@@ -119,12 +121,10 @@ public class EnemyController3D : MonoBehaviour, ICreature, IDamagable
     public void TakeDamage(int damage)
     {
         _currentHealth -= damage;
-        Debug.Log($"{gameObject.name} recibi� {damage} da�o. Salud: {_currentHealth}/{maxHealth}");
+        Debug.Log($"{gameObject.name} recibió {damage} daño. Salud: {_currentHealth}/{maxHealth}");
 
         if (_currentHealth <= 0)
-        {
             Die();
-        }
     }
 
     private void Die()
@@ -137,7 +137,7 @@ public class EnemyController3D : MonoBehaviour, ICreature, IDamagable
 
     public bool IsPlayerInShootRange()
     {
-        return Target ? Vector3.Distance(transform.position, Target.position) <= shootRange : false;
+        return Target && Vector3.Distance(transform.position, Target.position) <= shootRange;
     }
 
     public bool HasReachedWanderLimit()
@@ -150,13 +150,12 @@ public class EnemyController3D : MonoBehaviour, ICreature, IDamagable
 
     public void RotateTowardsPlayer()
     {
-        if (Target)
-        {
-            Vector3 direction = Target.position - transform.position;
-            direction.y = 0f;
-            if (direction.sqrMagnitude >= 0.001f)
-                RotateTowards(Quaternion.LookRotation(direction));
-        }
+        if (!Target) return;
+
+        Vector3 direction = Target.position - transform.position;
+        direction.y = 0f;
+        if (direction.sqrMagnitude >= 0.001f)
+            RotateTowards(Quaternion.LookRotation(direction));
     }
 
     public void RotateTowards(Quaternion targetRotation)
@@ -179,19 +178,31 @@ public class EnemyController3D : MonoBehaviour, ICreature, IDamagable
 
     public void Shoot()
     {
-        if (projectilePrefab && Target)
-        {
-            Vector3 direction = (Target.position - firePoint.position).normalized;
-            GameObject proj = Instantiate(projectilePrefab, firePoint.position, Quaternion.LookRotation(direction));
+        if (!projectilePrefab || !Target) return;
 
-            if (proj.TryGetComponent(out Projectile3D p))
-                p.Init(direction, projectileSpeed);
-        }
+        Vector3 direction = (Target.position - firePoint.position).normalized;
+        GameObject proj = Instantiate(projectilePrefab, firePoint.position, Quaternion.LookRotation(direction));
+
+        if (proj.TryGetComponent(out Projectile3D p))
+            p.Init(direction, projectileSpeed);
     }
+
+    // Animator — call once at state transitions, not per frame
 
     public void SetRunAnimation(bool running)
     {
-        _animator.SetBool(IsRunning, running);
+        _animator.SetBool(HashIsRunning, running);
+    }
+
+    public void SetShootAnimation(bool shooting)
+    {
+        _animator.SetBool(HashIsShooting, shooting);
+    }
+
+    public void SetIdleAnimation()
+    {
+        _animator.SetBool(HashIsRunning,  false);
+        _animator.SetBool(HashIsShooting, false);
     }
 
     // Editor helpers
@@ -200,11 +211,9 @@ public class EnemyController3D : MonoBehaviour, ICreature, IDamagable
     {
         Vector3 origin = Application.isPlaying ? OriginPosition : transform.position;
 
-        // Shoot range
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, shootRange);
 
-        // Wander boundary
         Gizmos.color = new Color(1f, 0.5f, 0f);
         Gizmos.DrawWireSphere(origin, maxWanderDistance);
     }

@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2404755041240655413
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7179849429311844913}
+  m_Layer: 7
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 3443629218296621865, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7179849429311844913
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2404755041240655413}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.095, y: 0.262, z: 1.257}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3039386153256727463}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3677378280595627993
 GameObject:
   m_ObjectHideFlags: 0
@@ -13,7 +44,7 @@ GameObject:
   - component: {fileID: 5374762881316238871}
   - component: {fileID: 8374333016021502013}
   m_Layer: 7
-  m_Name: Enemy
+  m_Name: Enemy10HP_1m
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,6 +65,7 @@ Transform:
   m_Children:
   - {fileID: 5029657615047129597}
   - {fileID: 5165330587152196960}
+  - {fileID: 7179849429311844913}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &6043946205580361188
@@ -93,17 +125,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d1b570ba2a360345a176dce1b2f036d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController3D
-  maxHealth: 30
+  maxHealth: 10
   projectilePrefab: {fileID: 3908422269554976203, guid: 16284b54bd3bbf346ad9482346650b68, type: 3}
-  projectileSpeed: 10
-  firePoint: {fileID: 0}
+  projectileSpeed: 8
+  firePoint: {fileID: 7179849429311844913}
   fireRate: 0.15
-  shootRange: 10
-  shootingTime: 2
+  shootRange: 20
+  shootingTime: 1
   shootingTimeVariance: 0.15
-  reloadTime: 1
+  reloadTime: 0.5
   moveSpeed: 3.5
-  maxWanderDistance: 3
+  maxWanderDistance: 1
   returnDelay: 5
 --- !u!1 &5451279611206539169
 GameObject:
@@ -166,7 +198,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 10
+  m_Radius: 20
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1797638401762724915
 MonoBehaviour:

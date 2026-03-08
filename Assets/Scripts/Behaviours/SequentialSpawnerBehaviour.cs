@@ -102,5 +102,6 @@ public class SequentialSpawnerBehaviour : MonoBehaviour
     {
         isActive = false;
         enabled = false;
+        this.gameObject.SetActive(false);
     }
 }
