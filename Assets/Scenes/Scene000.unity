@@ -346,7 +346,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1755334999}
         m_TargetAssemblyTypeName: AudioSettingsManager, Assembly-CSharp
         m_MethodName: SetSFXVolume
         m_Mode: 0
@@ -1628,7 +1628,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1755334999}
         m_TargetAssemblyTypeName: AudioSettingsManager, Assembly-CSharp
         m_MethodName: SetMasterVolume
         m_Mode: 0
@@ -3245,6 +3245,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4024456291961542102, guid: 953c49d06fee54c43881cb607ce2e099, type: 3}
+      propertyPath: '_clips.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: f6bdc6d6006165a4490cdb3b2e9a5ce7, type: 3}
     - target: {fileID: 4636478881906004480, guid: 953c49d06fee54c43881cb607ce2e099, type: 3}
       propertyPath: sliderSFX
       value: 
@@ -3257,6 +3261,10 @@ PrefabInstance:
       propertyPath: sliderMaster
       value: 
       objectReference: {fileID: 935921930}
+    - target: {fileID: 6616915659309710425, guid: 953c49d06fee54c43881cb607ce2e099, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 6577303724108843828, guid: 9b1a9126557ff554687c8cc8967c2ac0, type: 2}
     - target: {fileID: 7857240975463795813, guid: 953c49d06fee54c43881cb607ce2e099, type: 3}
       propertyPath: m_Name
       value: 'AudioManager '
@@ -3266,6 +3274,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 953c49d06fee54c43881cb607ce2e099, type: 3}
+--- !u!114 &1755334999 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4636478881906004480, guid: 953c49d06fee54c43881cb607ce2e099, type: 3}
+  m_PrefabInstance: {fileID: 1755334998}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0743fe6a9f54ceb489f49511ac99a09d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioSettingsManager
 --- !u!1 &1757500701
 GameObject:
   m_ObjectHideFlags: 0
@@ -3894,7 +3913,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1755334999}
         m_TargetAssemblyTypeName: AudioSettingsManager, Assembly-CSharp
         m_MethodName: SetMusicVolume
         m_Mode: 0

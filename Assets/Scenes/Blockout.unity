@@ -25751,7 +25751,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee792b4b106a6e948a5bd4380416865d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
-  _clips: []
+  _clips:
+  - {fileID: 8300000, guid: f6bdc6d6006165a4490cdb3b2e9a5ce7, type: 3}
+  - {fileID: 8300000, guid: 7f98c1c5b4685d04ca16f584833d048a, type: 3}
+  - {fileID: 8300000, guid: 6ec1f3fef7c53ea47aa152cd8d1bff86, type: 3}
+  - {fileID: 8300000, guid: 0f6f0bf745ed4824782cb2b29f2f2de3, type: 3}
+  - {fileID: 8300000, guid: 865375c4791170d429a7fdfd427c2974, type: 3}
+  - {fileID: 8300000, guid: 9297b43fa32bf1b4cb36fe4ee1df6557, type: 3}
+  - {fileID: 8300000, guid: 6d24aea0398ef454dae654a34341c4d8, type: 3}
+  - {fileID: 8300000, guid: 3b6949c686a57c144981f00385158edb, type: 3}
+  - {fileID: 8300000, guid: 69e015009b6736f418d4229b4ba1f948, type: 3}
+  - {fileID: 8300000, guid: 0cbbddd354cc7b944b0c232c22befd6b, type: 3}
   sfxAudioSourcePrefab: {fileID: 693368968}
 --- !u!4 &1789670934
 Transform:
