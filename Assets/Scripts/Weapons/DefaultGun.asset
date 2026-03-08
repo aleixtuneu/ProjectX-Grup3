@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a3bc92cbf8e60949b17c5b1c9790b98, type: 3}
   m_Name: DefaultGun
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  weaponName: DefaultGun
-  damage: 10
+  weaponName: Default Gun
+  damagePerShot: 10
   fireRate: 0.2
-  maxAmmo: 999
-  shootSound: {fileID: 0}
+  raycastDistance: 100
+  maxAmmo: 100
+  infiniteAmmo: 1

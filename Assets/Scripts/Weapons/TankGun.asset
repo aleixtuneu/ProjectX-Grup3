@@ -10,10 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a3bc92cbf8e60949b17c5b1c9790b98, type: 3}
-  m_Name: RocketLauncher
+  m_Name: TankGun
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  weaponName: RocketLauncher
-  damage: 100
-  fireRate: 1
-  maxAmmo: 10
-  shootSound: {fileID: 0}
+  weaponName: Tank Gun
+  damagePerShot: 30
+  fireRate: 0.3
+  raycastDistance: 100

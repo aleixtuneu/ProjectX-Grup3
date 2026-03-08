@@ -30,7 +30,7 @@ public class AudioManager : MonoBehaviour
     // Override to play spatialized event SFX at a position in world
     public void Play(AudioClip clip, Vector3 position)
     {
-        if (clip == null)
+        if (clip != null)
         {
             AudioSource newSource = Instantiate(sfxAudioSourcePrefab, position, Quaternion.identity);
             newSource.clip = clip;
@@ -46,7 +46,7 @@ public class AudioManager : MonoBehaviour
     // Override to play spatialized event SFX at a position in world with a custom radius
     public void Play(AudioClip clip, Vector3 position, float minDistance, float maxDistance)
     {
-        if (clip == null)
+        if (clip != null)
         {
             AudioSource newSource = Instantiate(sfxAudioSourcePrefab, position, Quaternion.identity);
             newSource.clip = clip;
