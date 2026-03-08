@@ -21,18 +21,16 @@ public class Projectile3D : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer != 7 && other.gameObject.layer != 2)
+        Debug.Log("Collided with = " + other.transform.name + ", layer number = " + other.gameObject.layer);
+        
+        if (other.gameObject.layer == 9)
         {
-            Debug.Log("Collided with = " + other.transform.name + ", layer number = " + other.gameObject.layer);
-            if (other.gameObject.layer == 6)
-            {
-                GameManager.Instance.PlayerDied();
-                Destroy(gameObject);
-            }
-            else if (other.gameObject.layer != gameObject.layer)
-            {
-                Destroy(gameObject);
-            }
+            Destroy(gameObject);
+        }
+        else if (other.gameObject.layer == 6)
+        {
+            GameManager.Instance.PlayerDied();
+            Destroy(gameObject);
         }
     }
 }
