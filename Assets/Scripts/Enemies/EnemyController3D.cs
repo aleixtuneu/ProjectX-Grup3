@@ -119,7 +119,7 @@ public class EnemyController3D : MonoBehaviour, ICreature, IDamagable
     public void TakeDamage(int damage)
     {
         _currentHealth -= damage;
-        Debug.Log($"{gameObject.name} recibió {damage} daño. Salud: {_currentHealth}/{maxHealth}");
+        Debug.Log($"{gameObject.name} recibiï¿½ {damage} daï¿½o. Salud: {_currentHealth}/{maxHealth}");
 
         if (_currentHealth <= 0)
         {

@@ -45,7 +45,7 @@ public class SequentialSpawnerBehaviour : MonoBehaviour
         if (!isActive) return;
 
         deadCount++;
-        Debug.Log($"Creature died. Dead count: {deadCount}/2");
+        //Debug.Log($"Creature died. Dead count: {deadCount}/2");
 
         if (deadCount >= 2)
         {
@@ -60,12 +60,12 @@ public class SequentialSpawnerBehaviour : MonoBehaviour
 
         if (currentPairIndex < creaturePairs.Count)
         {
-            Debug.Log($"Spawning next wave: {currentPairIndex}");
+            //Debug.Log($"Spawning next wave: {currentPairIndex}");
             SpawnCurrentPair();
         }
         else
         {
-            Debug.Log("All creature pairs spawned. Disabling spawner.");
+            //Debug.Log("All creature pairs spawned. Disabling spawner.");
             DisableSpawner();
         }
     }
@@ -74,7 +74,7 @@ public class SequentialSpawnerBehaviour : MonoBehaviour
     {
         CreaturePair pair = creaturePairs[currentPairIndex];
 
-        if (pair.creatureA != null)
+        if (pair.creatureA)
         {
             GameObject creatureA = Instantiate(pair.creatureA, spawnPositionA.position, Quaternion.identity);
             
@@ -84,7 +84,7 @@ public class SequentialSpawnerBehaviour : MonoBehaviour
                 creatureComponentA.SetSpawner(this);
             }
             
-            Debug.Log($"Spawned Creature A: {pair.creatureA.name} at pair {currentPairIndex}");
+            //Debug.Log($"Spawned Creature A: {pair.creatureA.name} at pair {currentPairIndex}");
         }
 
         if (pair.creatureB)
@@ -94,7 +94,7 @@ public class SequentialSpawnerBehaviour : MonoBehaviour
             ICreature creatureComponentB = creatureB.GetComponent<ICreature>();
             creatureComponentB?.SetSpawner(this);
 
-            Debug.Log($"Spawned Creature B: {pair.creatureB.name} at pair {currentPairIndex}");
+            //Debug.Log($"Spawned Creature B: {pair.creatureB.name} at pair {currentPairIndex}");
         }
     }
 
