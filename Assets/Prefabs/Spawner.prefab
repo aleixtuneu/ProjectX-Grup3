@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 687178837226878306}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 0, z: -1}
+  m_LocalPosition: {x: -1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -56,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 1134934436619765156}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0, z: -1}
+  m_LocalPosition: {x: 1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -115,7 +115,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2472873235706774796}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -190,6 +190,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a6d51ec9772ecd49aa0a8efda08b452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TriggerBehaviour
+  layer:
+    serializedVersion: 2
+    m_Bits: 64
+  selfDisable: 0
   triggerAction:
     m_PersistentCalls:
       m_Calls:
@@ -205,10 +209,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  layer:
-    serializedVersion: 2
-    m_Bits: 64
-  selfDisable: 0
+  triggerExitAction:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3418450496395418069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,11 +225,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SequentialSpawnerBehaviour
   creaturePairs:
-  - creatureA: {fileID: 7550053824639360466, guid: 0bafab712abc7ac40b218179a7b5b2c1, type: 3}
-    creatureB: {fileID: 7550053824639360466, guid: 0bafab712abc7ac40b218179a7b5b2c1, type: 3}
-  - creatureA: {fileID: 1550743481842227431, guid: dcc6eea3842e66848916f5f5adb51a23, type: 3}
-    creatureB: {fileID: 1550743481842227431, guid: dcc6eea3842e66848916f5f5adb51a23, type: 3}
-  - creatureA: {fileID: 7550053824639360466, guid: 0bafab712abc7ac40b218179a7b5b2c1, type: 3}
-    creatureB: {fileID: 1550743481842227431, guid: dcc6eea3842e66848916f5f5adb51a23, type: 3}
+  - creatureA: {fileID: 3677378280595627993, guid: 0bddfa99f29fcb94f952ddf6c384a5a6, type: 3}
+    creatureB: {fileID: 3677378280595627993, guid: 0bddfa99f29fcb94f952ddf6c384a5a6, type: 3}
+  - creatureA: {fileID: 3677378280595627993, guid: 0bddfa99f29fcb94f952ddf6c384a5a6, type: 3}
+    creatureB: {fileID: 3677378280595627993, guid: 6d23250b7902bf04ca3e7c59df6c9d97, type: 3}
+  - creatureA: {fileID: 3677378280595627993, guid: 6d23250b7902bf04ca3e7c59df6c9d97, type: 3}
+    creatureB: {fileID: 3677378280595627993, guid: 6d23250b7902bf04ca3e7c59df6c9d97, type: 3}
   spawnPositionA: {fileID: 6052697794345835912}
   spawnPositionB: {fileID: 5566636527529149456}
