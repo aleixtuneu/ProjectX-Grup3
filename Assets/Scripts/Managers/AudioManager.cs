@@ -23,8 +23,8 @@ public class AudioManager : MonoBehaviour
     // Play non-spatialized event SFX globally (e.g., UI clicks)
     public void Play(AudioClip clip)
     {
-        if (clip != null)
-            AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position, 1f);
+        if (clip != null && Camera.main != null)
+                AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position, 1f);
     }
 
     // Override to play spatialized event SFX at a position in world

@@ -21,7 +21,7 @@ public class TitleSceneUI : MonoBehaviour
 
     private void OnPlayClicked()
     {
-        SceneManager.LoadScene("Scene001");
+        SceneManager.LoadScene(sceneBuildIndex: 1);
     }
 
     private void OnSettingsClicked()
