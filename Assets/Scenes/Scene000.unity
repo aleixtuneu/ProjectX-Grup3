@@ -3245,6 +3245,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4024456291961542102, guid: 953c49d06fee54c43881cb607ce2e099, type: 3}
+      propertyPath: '_clips.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: f6bdc6d6006165a4490cdb3b2e9a5ce7, type: 3}
     - target: {fileID: 4636478881906004480, guid: 953c49d06fee54c43881cb607ce2e099, type: 3}
       propertyPath: sliderSFX
       value: 
@@ -3257,6 +3261,10 @@ PrefabInstance:
       propertyPath: sliderMaster
       value: 
       objectReference: {fileID: 935921930}
+    - target: {fileID: 6616915659309710425, guid: 953c49d06fee54c43881cb607ce2e099, type: 3}
+      propertyPath: OutputAudioMixerGroup
+      value: 
+      objectReference: {fileID: 6577303724108843828, guid: 9b1a9126557ff554687c8cc8967c2ac0, type: 2}
     - target: {fileID: 7857240975463795813, guid: 953c49d06fee54c43881cb607ce2e099, type: 3}
       propertyPath: m_Name
       value: 'AudioManager '
