@@ -7,8 +7,14 @@ public class PauseBehaviour : MonoBehaviour
 
     private void Update()
     {
+        if (Time.timeScale == 0f)
+        {
+            InputSystem.Update();
+        }
+
         if (Keyboard.current[pauseKey].wasPressedThisFrame)
         {
+            Debug.Log("Escape pressed!");
             GameManager.Instance?.TogglePause();
         }
     }
