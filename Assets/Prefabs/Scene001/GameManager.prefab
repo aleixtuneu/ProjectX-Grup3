@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8421669083342684174}
   - component: {fileID: 2964575011172045308}
+  - component: {fileID: 8186849734998289242}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -45,9 +46,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81345f06cfe7c504c8b05558e1667cfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  totalCheckpoints: 5
-  startingLives: 3
-  defaultSpawnPosition: {fileID: 8336938687632884822}
+  totalCheckpoints: 4
+  startingLives: 5
+  defaultSpawnPosition: {x: 0, y: 2.625, z: 0}
+--- !u!114 &8186849734998289242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5716969545541114486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f97bfda6ba765064dba7240452310d1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PauseBehaviour
+  pauseKey: 60
 --- !u!1 &7148365308595838042
 GameObject:
   m_ObjectHideFlags: 0
