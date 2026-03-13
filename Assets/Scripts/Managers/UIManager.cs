@@ -24,8 +24,8 @@ public class UIManager : MonoBehaviour
     
     [Header("Information Messages")]
     [SerializeField] private TextMeshProUGUI txtInformationUI;
-    [SerializeField] private string txtCheckpoint = "Checkpoint actualitzat!";
-    [SerializeField] private string textWeaponUnlock = "Has trobat una arma!";
+    [SerializeField] private string txtCheckpoint = "Checkpoint reached!";
+    [SerializeField] private string textWeaponUnlock = "New weapon!";
     [SerializeField] private float informationDisplayDuration = 2f;
     
     [Header("Winning UI")]
@@ -33,7 +33,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI txtWinMessage;
     [SerializeField] private TextMeshProUGUI txtWinScore;
     [SerializeField] private Button menuButtonWin;
-    [SerializeField] private string textWinning = "Has pogut escapar!";
+    [SerializeField] private string textWinning = "YOU WON!";
 
     [Header("Final Dialogue (Typewriter)")]
     [SerializeField] private GameObject finalDialoguePanel;
@@ -255,8 +255,8 @@ public class UIManager : MonoBehaviour
         if (txtWinMessage)
         {
             txtWinMessage.text = (deathCount > 0) ? 
-                $"{textWinning}\nPero t'ha costat {deathCount} intents." : 
-                $"{textWinning}\nEnhorabona! T'has mantingut invicte!\n\n...Espera, mai faries trampa, oi? oi?";
+                $"{textWinning}\n... But you lost {deathCount} lives." : 
+                $"{textWinning}\nCongratulations! And remember... only cheaters fail at winning!\n\n...because you wouldn't, ...right?";
         }
         
         // Show typewriter dialogue alongside win panel

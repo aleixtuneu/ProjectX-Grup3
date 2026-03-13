@@ -269,7 +269,10 @@ public class GameManager : MonoBehaviour
     {
         ChangeState(GameState.GameOver);
         Time.timeScale = 0f;
-        
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         int deathCount = startingLives - _livesRemaining;
         OnGameOver?.Invoke(_currentScore);
         
