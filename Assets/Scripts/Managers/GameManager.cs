@@ -270,7 +270,7 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.GameOver);
         Time.timeScale = 0f;
 
-        Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
 
         int deathCount = startingLives - _livesRemaining;
@@ -284,6 +284,9 @@ public class GameManager : MonoBehaviour
     {
         int deathCount = startingLives - _livesRemaining;
         OnExitReached?.Invoke(_currentScore, deathCount);
+        
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.visible = true;
         
         ChangeState(GameState.GameOver);
         Time.timeScale = 0f;
