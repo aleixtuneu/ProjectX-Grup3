@@ -6764,7 +6764,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TankController
   tankWeapon: {fileID: 11400000, guid: 2a5d09cfcf0953a43ae8c6b88c0fe01d, type: 2}
   cannonUI: {fileID: 790790438}
-  cannonObject: {fileID: 0}
   dismountDistance: 2
 --- !u!1 &812486054
 GameObject:

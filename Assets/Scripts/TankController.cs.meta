@@ -1,2 +1,14 @@
 fileFormatVersion: 2
 guid: 981b78987364f76499f4118e35f67176
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - tankWeapon: {instanceID: 0}
+  - cannonUI: {instanceID: 0}
+  - cannonObject: {fileID: 3626043390088209148, guid: 7825e3829f7feaf4d9a3245026313591, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
